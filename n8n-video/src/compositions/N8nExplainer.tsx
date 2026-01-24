@@ -295,9 +295,10 @@ export const N8nExplainer: React.FC = () => {
           highlight
         />
 
-        {/* Show workflow nodes briefly first */}
+        {/* Show workflow nodes - sequential activation left to right */}
         {frame - FRAMES.STAGE3_START < 80 && (
           <>
+            {/* Outliner - appears first, lights up immediately */}
             <WorkflowNode
               label="Outliner"
               type="ai"
@@ -305,8 +306,13 @@ export const N8nExplainer: React.FC = () => {
               x={cx - 280}
               y={cy - 60}
               appearAt={15}
-              isActive={frame - FRAMES.STAGE3_START > 30}
+              isActive={frame - FRAMES.STAGE3_START > 18}
             />
+
+            {/* Line to Writer - draws after Outliner lights */}
+            <ConnectionLine fromX={cx - 240} fromY={cy - 60} toX={cx - 120} toY={cy - 60} appearAt={22} isActive={frame - FRAMES.STAGE3_START > 32} />
+
+            {/* Writer - appears and lights up after line reaches it */}
             <WorkflowNode
               label="Writer"
               type="ai"
@@ -314,29 +320,36 @@ export const N8nExplainer: React.FC = () => {
               x={cx - 80}
               y={cy - 60}
               appearAt={25}
-              isActive={false}
+              isActive={frame - FRAMES.STAGE3_START > 35}
             />
+
+            {/* Line to Critic - draws after Writer lights */}
+            <ConnectionLine fromX={cx - 40} fromY={cy - 60} toX={cx + 80} toY={cy - 60} appearAt={38} isActive={frame - FRAMES.STAGE3_START > 48} />
+
+            {/* Critic - appears and lights up after line reaches it */}
             <WorkflowNode
               label="Critic"
               type="ai"
               icon="ai"
               x={cx + 120}
               y={cy - 60}
-              appearAt={35}
-              isActive={false}
+              appearAt={40}
+              isActive={frame - FRAMES.STAGE3_START > 50}
             />
+
+            {/* Line to Reviser - draws after Critic lights */}
+            <ConnectionLine fromX={cx + 160} fromY={cy - 60} toX={cx + 280} toY={cy - 60} appearAt={53} isActive={frame - FRAMES.STAGE3_START > 63} />
+
+            {/* Reviser - appears and lights up after line reaches it */}
             <WorkflowNode
               label="Reviser"
               type="ai"
               icon="ai"
               x={cx + 320}
               y={cy - 60}
-              appearAt={45}
-              isActive={false}
+              appearAt={55}
+              isActive={frame - FRAMES.STAGE3_START > 65}
             />
-            <ConnectionLine fromX={cx - 240} fromY={cy - 60} toX={cx - 120} toY={cy - 60} appearAt={30} isActive={frame - FRAMES.STAGE3_START > 40} />
-            <ConnectionLine fromX={cx - 40} fromY={cy - 60} toX={cx + 80} toY={cy - 60} appearAt={35} isActive={frame - FRAMES.STAGE3_START > 45} />
-            <ConnectionLine fromX={cx + 160} fromY={cy - 60} toX={cx + 280} toY={cy - 60} appearAt={40} isActive={frame - FRAMES.STAGE3_START > 50} />
           </>
         )}
 
