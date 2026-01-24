@@ -203,17 +203,32 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 2: AI Topic Selection"
           appearAt={0}
-          disappearAt={170}
+          disappearAt={50}
           position="top"
           size="medium"
           highlight
         />
 
-        {/* Articles coming in */}
+        {/* AI Agent Thinking - show the logic */}
+        <PromptHighlight
+          text="What does Transform Labs' audience care about?"
+          source="Topic Selector Agent — Thinking..."
+          appearAt={15}
+          disappearAt={70}
+        />
+
+        <PromptHighlight
+          text="What's NOT just hype?"
+          source="Topic Selector Agent — Filtering..."
+          appearAt={75}
+          disappearAt={130}
+        />
+
+        {/* Articles coming in and being filtered */}
         {[0, 1, 2, 3, 4].map((i) => {
           const fadeOut = interpolate(
             frame - FRAMES.STAGE2_START,
-            [50 + i * 8, 70 + i * 8],
+            [110 + i * 5, 125 + i * 5],
             [1, i === 2 ? 1 : 0],
             { extrapolateRight: 'clamp', extrapolateLeft: 'clamp' }
           );
@@ -228,10 +243,10 @@ export const N8nExplainer: React.FC = () => {
                 height: 65,
                 background: i === 2 ? theme.colors.primary : theme.colors.backgroundLight,
                 borderRadius: 8,
-                opacity: fadeOut * (frame - FRAMES.STAGE2_START > 15 + i * 5 ? 1 : 0),
+                opacity: fadeOut * (frame - FRAMES.STAGE2_START > 95 + i * 3 ? 1 : 0),
                 border: i === 2 ? `3px solid ${theme.colors.primary}` : 'none',
                 boxShadow: i === 2 ? `0 0 40px ${theme.colors.primary}80` : 'none',
-                transform: `scale(${i === 2 && frame - FRAMES.STAGE2_START > 80 ? 1.3 : 1})`,
+                transform: `scale(${i === 2 && frame - FRAMES.STAGE2_START > 140 ? 1.3 : 1})`,
               }}
             />
           );
@@ -244,20 +259,13 @@ export const N8nExplainer: React.FC = () => {
           icon="ai"
           x={cx + 130}
           y={cy}
-          appearAt={35}
-          isActive={frame - FRAMES.STAGE2_START > 45}
+          appearAt={135}
+          isActive={frame - FRAMES.STAGE2_START > 140}
         />
 
         <Caption
-          text="AI picks the ONE article worth talking about"
-          appearAt={90}
-          disappearAt={130}
-          position="bottom"
-          size="medium"
-        />
-        <Caption
-          text="Not clickbait. Stories that matter."
-          appearAt={135}
+          text="One article selected."
+          appearAt={150}
           position="bottom"
           size="medium"
           highlight
