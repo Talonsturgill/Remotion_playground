@@ -9,39 +9,39 @@ import { Stats } from '../components/text/Stats';
 import { PromptHighlight } from '../components/text/PromptHighlight';
 import { Logo } from '../components/Logo';
 
-// Frame timings (30fps)
+// Frame timings (30fps) - Extended for slower pacing
 const FRAMES = {
-  // Hook: 0-3s (0-90 frames)
+  // Hook: 0-4s (0-120 frames)
   HOOK_START: 0,
-  HOOK_END: 90,
+  HOOK_END: 120,
 
-  // Problem: 3-8s (90-240 frames)
-  PROBLEM_START: 90,
-  PROBLEM_END: 240,
+  // Problem: 4-9s (120-270 frames)
+  PROBLEM_START: 120,
+  PROBLEM_END: 270,
 
-  // Stage 1 - Discovery: 8-15s (240-450 frames)
-  STAGE1_START: 240,
-  STAGE1_END: 450,
+  // Stage 1 - Discovery: 9-18s (270-540 frames)
+  STAGE1_START: 270,
+  STAGE1_END: 540,
 
-  // Stage 2 - Selection: 15-22s (450-660 frames)
-  STAGE2_START: 450,
-  STAGE2_END: 660,
+  // Stage 2 - Selection: 18-27s (540-810 frames)
+  STAGE2_START: 540,
+  STAGE2_END: 810,
 
-  // Stage 3 - Writers Room: 22-35s (660-1050 frames)
-  STAGE3_START: 660,
-  STAGE3_END: 1050,
+  // Stage 3 - Writers Room: 27-42s (810-1260 frames)
+  STAGE3_START: 810,
+  STAGE3_END: 1260,
 
-  // Stage 4 - Quality Gate with Prompts: 35-45s (1050-1350 frames)
-  STAGE4_START: 1050,
-  STAGE4_END: 1350,
+  // Stage 4 - Quality Gate with Prompts: 42-54s (1260-1620 frames)
+  STAGE4_START: 1260,
+  STAGE4_END: 1620,
 
-  // Stage 5 - Delivery: 45-52s (1350-1560 frames)
-  STAGE5_START: 1350,
-  STAGE5_END: 1560,
+  // Stage 5 - Delivery: 54-66s (1620-1980 frames)
+  STAGE5_START: 1620,
+  STAGE5_END: 1980,
 
-  // Results + CTA: 52-60s (1560-1800 frames)
-  RESULTS_START: 1560,
-  RESULTS_END: 1800,
+  // Results + CTA: 66-75s (1980-2250 frames)
+  RESULTS_START: 1980,
+  RESULTS_END: 2250,
 };
 
 export const N8nExplainer: React.FC = () => {
@@ -51,6 +51,28 @@ export const N8nExplainer: React.FC = () => {
   // Center coordinates
   const cx = width / 2;
   const cy = height / 2;
+
+  // Dynamic zoom effect - zoom in during key moments
+  const getZoom = () => {
+    // Stage 3: Zoom in on AI agents
+    if (frame >= FRAMES.STAGE3_START + 60 && frame < FRAMES.STAGE3_START + 200) {
+      const progress = (frame - FRAMES.STAGE3_START - 60) / 140;
+      return 1 + interpolate(progress, [0, 0.5, 1], [0, 0.15, 0], { extrapolateRight: 'clamp' });
+    }
+    // Stage 4: Zoom in on quality prompts
+    if (frame >= FRAMES.STAGE4_START + 20 && frame < FRAMES.STAGE4_START + 180) {
+      const progress = (frame - FRAMES.STAGE4_START - 20) / 160;
+      return 1 + interpolate(progress, [0, 0.3, 0.7, 1], [0, 0.12, 0.12, 0], { extrapolateRight: 'clamp' });
+    }
+    // Stage 5: Slight zoom on approval flow
+    if (frame >= FRAMES.STAGE5_START + 40 && frame < FRAMES.STAGE5_START + 160) {
+      const progress = (frame - FRAMES.STAGE5_START - 40) / 120;
+      return 1 + interpolate(progress, [0, 0.5, 1], [0, 0.1, 0], { extrapolateRight: 'clamp' });
+    }
+    return 1;
+  };
+
+  const zoom = getZoom();
 
   return (
     <AbsoluteFill
@@ -77,6 +99,16 @@ export const N8nExplainer: React.FC = () => {
           transform: `translateY(${(frame * 0.3) % 40}px)`,
         }}
       />
+
+      {/* Zoom wrapper for dynamic focus */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          transform: `scale(${zoom})`,
+          transformOrigin: 'center center',
+        }}
+      >
 
       {/* Logo watermark */}
       <Logo appearAt={0} position="corner" size={40} />
@@ -527,6 +559,8 @@ export const N8nExplainer: React.FC = () => {
         {/* Final logo - positioned at bottom */}
         <Logo appearAt={120} position="bottom" size={50} />
       </Sequence>
+
+      </div>{/* End zoom wrapper */}
     </AbsoluteFill>
   );
 };
