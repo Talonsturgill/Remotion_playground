@@ -146,18 +146,18 @@ export const N8nExplainer: React.FC = () => {
           isActive={frame - FRAMES.STAGE1_START > 25}
         />
 
-        {/* RSS Feeds */}
-        {['TechCrunch', 'Wired', 'MIT', 'a16z', 'OhioX'].map((name, i) => (
+        {/* RSS Feeds - LARGE so viewers see the credible sources */}
+        {['TechCrunch', 'Wired', 'MIT Tech', 'a16z', 'OhioX'].map((name, i) => (
           <WorkflowNode
             key={name}
             label={name}
             type="integration"
             icon="rss"
-            x={cx - 50}
-            y={cy - 160 + i * 70}
+            x={cx}
+            y={cy - 200 + i * 90}
             appearAt={30 + i * 8}
             isActive={frame - FRAMES.STAGE1_START > 50 + i * 8}
-            scale={0.65}
+            scale={1}
           />
         ))}
 
