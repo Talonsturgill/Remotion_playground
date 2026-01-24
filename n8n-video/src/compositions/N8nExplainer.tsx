@@ -25,25 +25,25 @@ const FRAMES = {
   STAGE1_START: 210,
   STAGE1_END: 420,
 
-  // Stage 2 - Selection: 14-20s (420-600 frames)
+  // Stage 2 - Selection: 14-23s (420-690 frames) - extended for readability
   STAGE2_START: 420,
-  STAGE2_END: 600,
+  STAGE2_END: 690,
 
-  // Stage 3 - Writers Room: 20-32s (600-960 frames)
-  STAGE3_START: 600,
-  STAGE3_END: 960,
+  // Stage 3 - Writers Room: 23-35s (690-1050 frames)
+  STAGE3_START: 690,
+  STAGE3_END: 1050,
 
-  // Stage 4 - Quality Gate: 32-42s (960-1260 frames)
-  STAGE4_START: 960,
-  STAGE4_END: 1260,
+  // Stage 4 - Quality Gate: 35-44s (1050-1320 frames)
+  STAGE4_START: 1050,
+  STAGE4_END: 1320,
 
-  // Stage 5 - Delivery: 42-50s (1260-1500 frames)
-  STAGE5_START: 1260,
-  STAGE5_END: 1500,
+  // Stage 5 - Delivery: 44-52s (1320-1560 frames)
+  STAGE5_START: 1320,
+  STAGE5_END: 1560,
 
-  // Results + CTA: 50-60s (1500-1800 frames)
-  RESULTS_START: 1500,
-  RESULTS_END: 1800,
+  // Results + CTA: 52-63s (1560-1890 frames)
+  RESULTS_START: 1560,
+  RESULTS_END: 1890,
 };
 
 export const N8nExplainer: React.FC = () => {
@@ -201,7 +201,7 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 2: AI Topic Selection"
           appearAt={0}
-          disappearAt={50}
+          disappearAt={70}
           position="top"
           size="medium"
           highlight
@@ -211,22 +211,22 @@ export const N8nExplainer: React.FC = () => {
         <PromptHighlight
           text="What does Transform Labs' audience care about?"
           source="Topic Selector Agent — Thinking..."
-          appearAt={15}
-          disappearAt={70}
+          appearAt={20}
+          disappearAt={110}
         />
 
         <PromptHighlight
           text="What's NOT just hype?"
           source="Topic Selector Agent — Filtering..."
-          appearAt={75}
-          disappearAt={130}
+          appearAt={115}
+          disappearAt={195}
         />
 
         {/* Articles coming in and being filtered */}
         {[0, 1, 2, 3, 4].map((i) => {
           const fadeOut = interpolate(
             frame - FRAMES.STAGE2_START,
-            [110 + i * 5, 125 + i * 5],
+            [170 + i * 8, 195 + i * 8],
             [1, i === 2 ? 1 : 0],
             { extrapolateRight: 'clamp', extrapolateLeft: 'clamp' }
           );
@@ -241,10 +241,10 @@ export const N8nExplainer: React.FC = () => {
                 height: 65,
                 background: i === 2 ? theme.colors.primary : theme.colors.backgroundLight,
                 borderRadius: 8,
-                opacity: fadeOut * (frame - FRAMES.STAGE2_START > 95 + i * 3 ? 1 : 0),
+                opacity: fadeOut * (frame - FRAMES.STAGE2_START > 150 + i * 5 ? 1 : 0),
                 border: i === 2 ? `3px solid ${theme.colors.primary}` : 'none',
                 boxShadow: i === 2 ? `0 0 40px ${theme.colors.primary}80` : 'none',
-                transform: `scale(${i === 2 && frame - FRAMES.STAGE2_START > 140 ? 1.3 : 1})`,
+                transform: `scale(${i === 2 && frame - FRAMES.STAGE2_START > 210 ? 1.3 : 1})`,
               }}
             />
           );
@@ -257,13 +257,13 @@ export const N8nExplainer: React.FC = () => {
           icon="ai"
           x={cx + 130}
           y={cy}
-          appearAt={135}
-          isActive={frame - FRAMES.STAGE2_START > 140}
+          appearAt={200}
+          isActive={frame - FRAMES.STAGE2_START > 210}
         />
 
         <Caption
           text="One article selected."
-          appearAt={150}
+          appearAt={220}
           position="bottom"
           size="medium"
           highlight
