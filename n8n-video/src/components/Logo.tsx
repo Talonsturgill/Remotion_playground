@@ -1,5 +1,5 @@
 import React from 'react';
-import { interpolate, spring, useCurrentFrame, useVideoConfig, Img, staticFile } from 'remotion';
+import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { theme } from '../theme';
 
 interface LogoProps {
@@ -8,6 +8,63 @@ interface LogoProps {
   size?: number;
   showText?: boolean;
 }
+
+// SVG Transform Labs Logo - stylized L with circuit/flow elements
+const TransformLabsLogo: React.FC<{ size: number; variant?: 'blue' | 'white' }> = ({
+  size,
+  variant = 'blue'
+}) => {
+  const bgColor = variant === 'blue' ? theme.colors.primary : 'transparent';
+  const strokeColor = variant === 'blue' ? 'white' : 'white';
+
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100">
+      {/* Background circle for blue variant */}
+      {variant === 'blue' && (
+        <circle cx="50" cy="50" r="48" fill={bgColor} />
+      )}
+
+      {/* Outer dashed circle with arrows */}
+      <circle
+        cx="50" cy="50" r="38"
+        fill="none"
+        stroke={strokeColor}
+        strokeWidth="2"
+        strokeDasharray="8 4"
+        opacity="0.8"
+      />
+
+      {/* Arrow at top of circle */}
+      <polygon
+        points="50,10 45,18 55,18"
+        fill={strokeColor}
+      />
+
+      {/* Arrow at bottom left */}
+      <polygon
+        points="20,65 28,60 25,70"
+        fill={strokeColor}
+      />
+
+      {/* L-shaped workflow icon */}
+      <path
+        d="M 40 30 L 40 55 L 65 55"
+        fill="none"
+        stroke={strokeColor}
+        strokeWidth="4"
+        strokeLinecap="square"
+      />
+
+      {/* Connection nodes (circles) */}
+      <circle cx="40" cy="30" r="4" fill={strokeColor} />
+      <circle cx="40" cy="55" r="4" fill={strokeColor} />
+      <circle cx="65" cy="55" r="4" fill={strokeColor} />
+
+      {/* Small connector dots */}
+      <circle cx="52" cy="42" r="3" fill={strokeColor} opacity="0.7" />
+    </svg>
+  );
+};
 
 export const Logo: React.FC<LogoProps> = ({
   appearAt = 0,
@@ -36,9 +93,6 @@ export const Logo: React.FC<LogoProps> = ({
       ? { bottom: 80, left: '50%', transform: `translateX(-50%) scale(${scale})` }
       : { top: height / 2 - size, left: '50%', transform: `translateX(-50%) scale(${scale})` };
 
-  // Use the uploaded logo file
-  const logoFile = showText ? 'Transform_Labs_Logo_E11_Text-Ba.webp' : 'Large_Logo.webp';
-
   return (
     <div
       style={{
@@ -51,14 +105,7 @@ export const Logo: React.FC<LogoProps> = ({
         transform: position === 'corner' ? `scale(${scale})` : positionStyles.transform,
       }}
     >
-      <Img
-        src={staticFile(logoFile)}
-        style={{
-          width: size * 2,
-          height: 'auto',
-          objectFit: 'contain',
-        }}
-      />
+      <TransformLabsLogo size={size * 2} variant="blue" />
       {position !== 'corner' && (
         <div
           style={{
