@@ -1,0 +1,20 @@
+{
+  "name": "n8n-video",
+  "version": "1.0.0",
+  "description": "Transform Labs n8n workflow explainer videos",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render src/index.ts N8nExplainer out/video.mp4",
+    "build": "remotion render src/index.ts N8nExplainer out/video.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.409",
+    "@remotion/player": "^4.0.409",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "remotion": "^4.0.409",
+    "typescript": "^5.9.3"
+  }
+}

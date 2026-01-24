@@ -1,0 +1,59 @@
+name: Render Video
+
+on:
+  workflow_dispatch:  # Manual trigger from GitHub UI
+  push:
+    branches:
+      - claude/add-remotion-skill-mW5Tk
+    paths:
+      - 'n8n-video/**'
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: n8n-video/package-lock.json
+
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libgbm1 \
+            libasound2 \
+            libpango-1.0-0 \
+            libcairo2 \
+            libnss3 \
+            libnspr4 \
+            libxss1
+
+      - name: Install dependencies
+        working-directory: n8n-video
+        run: npm ci
+
+      - name: Render video
+        working-directory: n8n-video
+        run: npx remotion render N8nExplainer out/video.mp4
+
+      - name: Upload video artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-video
+          path: n8n-video/out/video.mp4
+          retention-days: 30
