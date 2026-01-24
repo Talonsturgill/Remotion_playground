@@ -146,13 +146,13 @@ export const N8nExplainer: React.FC = () => {
           isActive={frame - FRAMES.STAGE1_START > 25}
         />
 
-        {/* RSS Feeds - spread out horizontally so names are visible */}
+        {/* RSS Feeds - spread out horizontally, pushed down from trigger */}
         {[
-          { name: 'TechCrunch', x: cx - 280, y: cy - 120 },
-          { name: 'Wired', x: cx - 140, y: cy + 20 },
-          { name: 'MIT Tech', x: cx, y: cy - 120 },
-          { name: 'a16z', x: cx + 140, y: cy + 20 },
-          { name: 'OhioX', x: cx + 280, y: cy - 120 },
+          { name: 'TechCrunch', x: cx - 280, y: cy - 20 },
+          { name: 'Wired', x: cx - 140, y: cy + 120 },
+          { name: 'MIT Tech', x: cx, y: cy - 20 },
+          { name: 'a16z', x: cx + 140, y: cy + 120 },
+          { name: 'OhioX', x: cx + 280, y: cy - 20 },
         ].map((feed, i) => (
           <WorkflowNode
             key={feed.name}
@@ -173,7 +173,7 @@ export const N8nExplainer: React.FC = () => {
           type="flow"
           icon="merge"
           x={cx}
-          y={cy + 160}
+          y={cy + 260}
           appearAt={80}
           isActive={frame - FRAMES.STAGE1_START > 100}
         />
