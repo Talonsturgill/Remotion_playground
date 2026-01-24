@@ -135,13 +135,13 @@ export const N8nExplainer: React.FC = () => {
           highlight
         />
 
-        {/* Schedule trigger */}
+        {/* Schedule trigger - centered at top */}
         <WorkflowNode
           label="M/W/F 9AM"
           type="trigger"
           icon="schedule"
-          x={cx - 300}
-          y={cy - 80}
+          x={cx}
+          y={cy - 250}
           appearAt={15}
           isActive={frame - FRAMES.STAGE1_START > 25}
         />
@@ -178,11 +178,11 @@ export const N8nExplainer: React.FC = () => {
           isActive={frame - FRAMES.STAGE1_START > 100}
         />
 
-        {/* Connection from trigger */}
+        {/* Connection from trigger to feeds */}
         <ConnectionLine
-          fromX={cx - 260}
-          fromY={cy - 80}
-          toX={cx - 280}
+          fromX={cx}
+          fromY={cy - 210}
+          toX={cx}
           toY={cy - 160}
           appearAt={40}
           isActive={frame - FRAMES.STAGE1_START > 50}
