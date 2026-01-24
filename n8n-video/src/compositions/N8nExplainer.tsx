@@ -236,13 +236,13 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="AI picks the ONE article worth talking about"
           appearAt={100}
-          disappearAt={180}
+          disappearAt={140}
           position="bottom"
           size="medium"
         />
         <Caption
           text="Not clickbait. Stories that matter."
-          appearAt={140}
+          appearAt={145}
           position="bottom"
           size="medium"
           highlight
