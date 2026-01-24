@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate } from 'remotion';
+import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, Audio, staticFile } from 'remotion';
 import { theme } from '../theme';
 import { WorkflowNode } from '../components/nodes/WorkflowNode';
 import { ConnectionLine } from '../components/canvas/ConnectionLine';
@@ -58,6 +58,9 @@ export const N8nExplainer: React.FC = () => {
         background: `linear-gradient(135deg, ${theme.colors.background} 0%, #1a1a2e 100%)`,
       }}
     >
+      {/* Background music */}
+      <Audio src={staticFile('music.mp3')} volume={0.5} />
+
       {/* Animated background grid */}
       <div
         style={{
