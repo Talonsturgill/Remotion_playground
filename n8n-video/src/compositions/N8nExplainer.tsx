@@ -8,6 +8,8 @@ import { Title } from '../components/text/Title';
 import { Stats } from '../components/text/Stats';
 import { PromptHighlight } from '../components/text/PromptHighlight';
 import { Logo } from '../components/Logo';
+import { AgentWorkScreen } from '../components/agents/AgentWorkScreen';
+import { ScreenshotDisplay } from '../components/agents/ScreenshotDisplay';
 
 // Frame timings (30fps) - 60 second video
 const FRAMES = {
@@ -267,81 +269,106 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 3: The AI Writers Room"
           appearAt={0}
-          disappearAt={340}
+          disappearAt={60}
           position="top"
           size="medium"
           highlight
         />
 
-        {/* Four AI Agents */}
-        <WorkflowNode
-          label="Outliner"
-          type="ai"
-          icon="ai"
-          x={cx - 280}
-          y={cy - 60}
-          appearAt={15}
-          isActive={frame - FRAMES.STAGE3_START > 30 && frame - FRAMES.STAGE3_START < 130}
-        />
-        <WorkflowNode
-          label="Writer"
-          type="ai"
-          icon="ai"
-          x={cx - 80}
-          y={cy - 60}
-          appearAt={50}
-          isActive={frame - FRAMES.STAGE3_START > 80 && frame - FRAMES.STAGE3_START < 180}
-        />
-        <WorkflowNode
-          label="Critic"
-          type="ai"
-          icon="ai"
-          x={cx + 120}
-          y={cy - 60}
-          appearAt={85}
-          isActive={frame - FRAMES.STAGE3_START > 130 && frame - FRAMES.STAGE3_START < 260}
-        />
-        <WorkflowNode
-          label="Reviser"
-          type="ai"
-          icon="ai"
-          x={cx + 320}
-          y={cy - 60}
-          appearAt={120}
-          isActive={frame - FRAMES.STAGE3_START > 220}
-        />
-
-        {/* Connections */}
-        <ConnectionLine
-          fromX={cx - 240}
-          fromY={cy - 60}
-          toX={cx - 120}
-          toY={cy - 60}
-          appearAt={40}
-          isActive={frame - FRAMES.STAGE3_START > 65}
-        />
-        <ConnectionLine
-          fromX={cx - 40}
-          fromY={cy - 60}
-          toX={cx + 80}
-          toY={cy - 60}
-          appearAt={75}
-          isActive={frame - FRAMES.STAGE3_START > 110}
-        />
-        <ConnectionLine
-          fromX={cx + 160}
-          fromY={cy - 60}
-          toX={cx + 280}
-          toY={cy - 60}
-          appearAt={110}
-          isActive={frame - FRAMES.STAGE3_START > 180}
-        />
+        {/* Show workflow nodes briefly first */}
+        {frame - FRAMES.STAGE3_START < 80 && (
+          <>
+            <WorkflowNode
+              label="Outliner"
+              type="ai"
+              icon="ai"
+              x={cx - 280}
+              y={cy - 60}
+              appearAt={15}
+              isActive={frame - FRAMES.STAGE3_START > 30}
+            />
+            <WorkflowNode
+              label="Writer"
+              type="ai"
+              icon="ai"
+              x={cx - 80}
+              y={cy - 60}
+              appearAt={25}
+              isActive={false}
+            />
+            <WorkflowNode
+              label="Critic"
+              type="ai"
+              icon="ai"
+              x={cx + 120}
+              y={cy - 60}
+              appearAt={35}
+              isActive={false}
+            />
+            <WorkflowNode
+              label="Reviser"
+              type="ai"
+              icon="ai"
+              x={cx + 320}
+              y={cy - 60}
+              appearAt={45}
+              isActive={false}
+            />
+            <ConnectionLine fromX={cx - 240} fromY={cy - 60} toX={cx - 120} toY={cy - 60} appearAt={30} isActive={false} />
+            <ConnectionLine fromX={cx - 40} fromY={cy - 60} toX={cx + 80} toY={cy - 60} appearAt={35} isActive={false} />
+            <ConnectionLine fromX={cx + 160} fromY={cy - 60} toX={cx + 280} toY={cy - 60} appearAt={40} isActive={false} />
+          </>
+        )}
 
         <Caption
-          text="One outlines. One writes. One critiques. One revises."
-          appearAt={160}
+          text="4 AI agents work together..."
+          appearAt={30}
+          disappearAt={75}
           position="bottom"
           size="medium"
+        />
+
+        {/* ZOOM IN: Watch Outliner work */}
+        <AgentWorkScreen
+          type="outliner"
+          appearAt={80}
+          disappearAt={170}
+        />
+        <Caption
+          text="Outliner structures the thread"
+          appearAt={85}
+          disappearAt={165}
+          position="top"
+          size="medium"
+        />
+
+        {/* ZOOM IN: Watch Writer work */}
+        <AgentWorkScreen
+          type="writer"
+          appearAt={175}
+          disappearAt={265}
+        />
+        <Caption
+          text="Writer drafts each tweet"
+          appearAt={180}
+          disappearAt={260}
+          position="top"
+          size="medium"
+        />
+
+        {/* ZOOM IN: Watch Critic work */}
+        <AgentWorkScreen
+          type="critic"
+          appearAt={270}
+          disappearAt={340}
+        />
+        <Caption
+          text="Critic scores ruthlessly"
+          appearAt={275}
+          disappearAt={335}
+          position="top"
+          size="medium"
+          highlight
         />
       </Sequence>
 
@@ -438,79 +465,47 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 5: Human in the Loop"
           appearAt={0}
-          disappearAt={70}
+          disappearAt={50}
           position="top"
           size="medium"
           highlight
         />
 
-        {/* Content HQ (Notion) */}
-        <WorkflowNode
-          label="Content HQ"
-          type="integration"
-          icon="notion"
-          x={cx - 150}
-          y={cy - 50}
-          appearAt={15}
-          isActive={frame - FRAMES.STAGE5_START > 25 && frame - FRAMES.STAGE5_START < 100}
-        />
-
-        {/* Human Approval */}
-        <WorkflowNode
-          label="Approve"
-          type="action"
-          icon="quality"
-          x={cx}
-          y={cy - 50}
-          appearAt={40}
-          isActive={frame - FRAMES.STAGE5_START > 50 && frame - FRAMES.STAGE5_START < 120}
-        />
-
-        {/* Slack notification */}
-        <WorkflowNode
-          label="Slack"
-          type="integration"
-          icon="slack"
-          x={cx + 150}
-          y={cy - 50}
-          appearAt={65}
-          isActive={frame - FRAMES.STAGE5_START > 85}
-        />
-
-        <ConnectionLine
-          fromX={cx - 110}
-          fromY={cy - 50}
-          toX={cx - 40}
-          toY={cy - 50}
-          appearAt={30}
-          isActive={frame - FRAMES.STAGE5_START > 40}
-        />
-        <ConnectionLine
-          fromX={cx + 40}
-          fromY={cy - 50}
-          toX={cx + 110}
-          toY={cy - 50}
-          appearAt={55}
-          isActive={frame - FRAMES.STAGE5_START > 75}
+        {/* Show real Notion screenshot - Content HQ */}
+        <ScreenshotDisplay
+          src="slack_pic2.png"
+          title="Content HQ — Thread Ready for Review"
+          appearAt={20}
+          disappearAt={120}
+          scale={0.95}
         />
 
         <Caption
           text="Thread lands in Content HQ"
           appearAt={25}
-          disappearAt={75}
+          disappearAt={65}
           position="bottom"
           size="medium"
         />
         <Caption
           text="One-click human approval"
-          appearAt={80}
-          disappearAt={130}
+          appearAt={70}
+          disappearAt={120}
           position="bottom"
           size="medium"
           highlight
         />
+
+        {/* Show real Slack notification */}
+        <ScreenshotDisplay
+          src="slack_pic.png"
+          title="Slack — #marketing-twitter-posts"
+          appearAt={125}
+          scale={0.95}
+        />
+
         <Caption
-          text="Then Slack pings the team"
+          text="Slack pings the team — Thread posted!"
           appearAt={135}
           position="bottom"
           size="medium"
