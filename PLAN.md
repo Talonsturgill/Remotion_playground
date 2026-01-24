@@ -215,12 +215,16 @@ Imagine: A sleek, dark-themed video where nodes smoothly animate in, glowing con
 
 ---
 
-## Questions to Consider
+## Brand Guidelines (Confirmed)
 
-1. **Brand colors**: What are Transform Labs' primary colors?
-2. **Logo**: Do you have an SVG/PNG logo to include?
-3. **Tone**: Professional and corporate, or casual and fun?
-4. **Music**: Want background music, or silent with captions only?
+| Element | Value |
+|---------|-------|
+| **Primary Color** | #00A0E4 (bright sky blue/cyan) |
+| **Logo** | Circuit-style "T" with transformation circle arrows |
+| **Tone** | Casual, no AI hype - sounds human |
+| **Music** | Hip-hop beat + prominent captions |
+| **Format** | 1080x1080 square (LinkedIn optimized) |
+| **Duration** | ~60 seconds |
 
 ---
 
@@ -345,12 +349,25 @@ We have our first workflow to create a video for! Here's the breakdown:
 
 ### Visual Style for This Video
 
-**Color Palette** (suggestion):
-- Background: Dark (#0F172A - slate-900)
-- Primary accent: Electric blue (#3B82F6)
-- Secondary: Purple (#8B5CF6) for AI/agent nodes
-- Success: Green (#22C55E) for quality passing
-- Warning: Orange (#F59E0B) for revision loop
+**Transform Labs Brand Colors**:
+- **Primary Blue**: #00A0E4 (bright sky blue/cyan - the logo color)
+- **Background Dark**: #0F172A (slate-900 - for dark mode videos)
+- **Background Light**: #FFFFFF (white - for light mode option)
+- **Text on Dark**: #FFFFFF (white)
+- **Text on Light**: #1A1A1A (near black)
+
+**Video Color Palette**:
+- Background: Dark (#0F172A) - sleek, modern, makes the blue pop
+- Primary accent: Transform Labs Blue (#00A0E4) - nodes, highlights, connections
+- Secondary: Lighter blue (#38BDF8) - hover states, secondary elements
+- Success: Green (#22C55E) - quality gate passing
+- Warning: Amber (#F59E0B) - revision loop indicator
+- AI Agents: Gradient blue glow - emphasize the "transformation" theme
+
+**Logo Usage**:
+- White logo on dark backgrounds
+- Dark logo on light backgrounds
+- Logo features: Circuit-style "T" with node connection points, surrounded by circular transformation arrows
 
 **Animation Ideas**:
 - Nodes "boot up" with a subtle glow
