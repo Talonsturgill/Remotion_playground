@@ -58,10 +58,10 @@ export const N8nExplainer: React.FC = () => {
         background: `linear-gradient(135deg, ${theme.colors.background} 0%, #1a1a2e 100%)`,
       }}
     >
-      {/* Background music - using Pixabay royalty-free hip-hop beat */}
+      {/* Background music */}
       <Audio
-        src="https://cdn.pixabay.com/audio/2024/11/04/audio_4956b18c6e.mp3"
-        volume={0.4}
+        src={staticFile('no-copyright-music-hip-hop-333685.mp3')}
+        volume={0.7}
       />
 
       {/* Animated background grid */}
