@@ -585,8 +585,8 @@ export const N8nExplainer: React.FC = () => {
           highlight
         />
 
-        {/* Final logo - appears after caption fades */}
-        <Logo appearAt={100} position="center" size={80} />
+        {/* Final logo - positioned at bottom, not covering stats */}
+        <Logo appearAt={100} position="bottom" size={50} />
       </Sequence>
     </AbsoluteFill>
   );
