@@ -29,21 +29,21 @@ const FRAMES = {
   STAGE2_START: 420,
   STAGE2_END: 690,
 
-  // Stage 3 - Writers Room: 23-36s (690-1080 frames) - extended for agent flow view
+  // Stage 3 - Writers Room: 23-36.5s (690-1095 frames) - extended for agent flow view
   STAGE3_START: 690,
-  STAGE3_END: 1080,
+  STAGE3_END: 1095,
 
-  // Stage 4 - Quality Gate: 36-45s (1080-1350 frames)
-  STAGE4_START: 1080,
-  STAGE4_END: 1350,
+  // Stage 4 - Quality Gate: 36.5-45.5s (1095-1365 frames)
+  STAGE4_START: 1095,
+  STAGE4_END: 1365,
 
-  // Stage 5 - Delivery: 45-53s (1350-1590 frames)
-  STAGE5_START: 1350,
-  STAGE5_END: 1590,
+  // Stage 5 - Delivery: 45.5-53.5s (1365-1605 frames)
+  STAGE5_START: 1365,
+  STAGE5_END: 1605,
 
-  // Results + CTA: 53-64s (1590-1920 frames)
-  RESULTS_START: 1590,
-  RESULTS_END: 1920,
+  // Results + CTA: 53.5-64.5s (1605-1935 frames)
+  RESULTS_START: 1605,
+  RESULTS_END: 1935,
 };
 
 export const N8nExplainer: React.FC = () => {
@@ -296,7 +296,7 @@ export const N8nExplainer: React.FC = () => {
         />
 
         {/* Show workflow nodes - sequential activation left to right (extended view time) */}
-        {frame - FRAMES.STAGE3_START < 110 && (
+        {frame - FRAMES.STAGE3_START < 125 && (
           <>
             {/* Outliner - appears first, lights up immediately */}
             <WorkflowNode
@@ -356,7 +356,7 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="4 AI agents work together..."
           appearAt={30}
-          disappearAt={105}
+          disappearAt={120}
           position="bottom"
           size="medium"
         />
@@ -364,13 +364,13 @@ export const N8nExplainer: React.FC = () => {
         {/* ZOOM IN: Watch Outliner work */}
         <AgentWorkScreen
           type="outliner"
-          appearAt={110}
-          disappearAt={200}
+          appearAt={125}
+          disappearAt={215}
         />
         <Caption
           text="Outliner structures the thread"
-          appearAt={115}
-          disappearAt={195}
+          appearAt={130}
+          disappearAt={210}
           position="top"
           size="medium"
         />
@@ -378,13 +378,13 @@ export const N8nExplainer: React.FC = () => {
         {/* ZOOM IN: Watch Writer work */}
         <AgentWorkScreen
           type="writer"
-          appearAt={205}
-          disappearAt={295}
+          appearAt={220}
+          disappearAt={310}
         />
         <Caption
           text="Writer drafts each tweet"
-          appearAt={210}
-          disappearAt={290}
+          appearAt={225}
+          disappearAt={305}
           position="top"
           size="medium"
         />
@@ -392,13 +392,13 @@ export const N8nExplainer: React.FC = () => {
         {/* ZOOM IN: Watch Critic work */}
         <AgentWorkScreen
           type="critic"
-          appearAt={300}
-          disappearAt={370}
+          appearAt={315}
+          disappearAt={385}
         />
         <Caption
           text="Critic scores ruthlessly"
-          appearAt={305}
-          disappearAt={365}
+          appearAt={320}
+          disappearAt={380}
           position="top"
           size="medium"
           highlight
