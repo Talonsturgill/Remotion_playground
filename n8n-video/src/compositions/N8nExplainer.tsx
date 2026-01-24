@@ -178,15 +178,19 @@ export const N8nExplainer: React.FC = () => {
           isActive={frame - FRAMES.STAGE1_START > 100}
         />
 
-        {/* Connection from trigger to feeds */}
-        <ConnectionLine
-          fromX={cx}
-          fromY={cy - 210}
-          toX={cx}
-          toY={cy - 160}
-          appearAt={40}
-          isActive={frame - FRAMES.STAGE1_START > 50}
-        />
+        {/* Connections from trigger to each RSS feed */}
+        <ConnectionLine fromX={cx} fromY={cy - 210} toX={cx - 280} toY={cy - 60} appearAt={25} isActive={frame - FRAMES.STAGE1_START > 35} />
+        <ConnectionLine fromX={cx} fromY={cy - 210} toX={cx - 140} toY={cy + 80} appearAt={33} isActive={frame - FRAMES.STAGE1_START > 43} />
+        <ConnectionLine fromX={cx} fromY={cy - 210} toX={cx} toY={cy - 60} appearAt={41} isActive={frame - FRAMES.STAGE1_START > 51} />
+        <ConnectionLine fromX={cx} fromY={cy - 210} toX={cx + 140} toY={cy + 80} appearAt={49} isActive={frame - FRAMES.STAGE1_START > 59} />
+        <ConnectionLine fromX={cx} fromY={cy - 210} toX={cx + 280} toY={cy - 60} appearAt={57} isActive={frame - FRAMES.STAGE1_START > 67} />
+
+        {/* Connections from each RSS feed to merge node */}
+        <ConnectionLine fromX={cx - 280} fromY={cy + 20} toX={cx} toY={cy + 220} appearAt={70} isActive={frame - FRAMES.STAGE1_START > 85} />
+        <ConnectionLine fromX={cx - 140} fromY={cy + 160} toX={cx} toY={cy + 220} appearAt={75} isActive={frame - FRAMES.STAGE1_START > 90} />
+        <ConnectionLine fromX={cx} fromY={cy + 20} toX={cx} toY={cy + 220} appearAt={80} isActive={frame - FRAMES.STAGE1_START > 95} />
+        <ConnectionLine fromX={cx + 140} fromY={cy + 160} toX={cx} toY={cy + 220} appearAt={85} isActive={frame - FRAMES.STAGE1_START > 100} />
+        <ConnectionLine fromX={cx + 280} fromY={cy + 20} toX={cx} toY={cy + 220} appearAt={90} isActive={frame - FRAMES.STAGE1_START > 105} />
 
         <Caption
           text="5 RSS feeds scan AI news every morning"
