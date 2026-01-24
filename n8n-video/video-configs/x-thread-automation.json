@@ -1,0 +1,189 @@
+{
+  "video": {
+    "title": "X Thread Automation - Transform Labs",
+    "description": "Explainer video showing how Transform Labs automated their Twitter/X thread creation using n8n and AI agents",
+    "width": 1080,
+    "height": 1080,
+    "fps": 30,
+    "durationInSeconds": 65
+  },
+  "branding": {
+    "primaryColor": "#00A0E4",
+    "companyName": "Transform Labs",
+    "logoFile": "Large_Logo.webp",
+    "logoWithTextFile": "Transform_Labs_Logo_E11_Text-Ba.webp"
+  },
+  "audio": {
+    "backgroundMusic": "no-copyright-music-hip-hop-333685.mp3",
+    "volume": 0.6
+  },
+  "stages": [
+    {
+      "id": "hook",
+      "type": "title",
+      "startTime": 0,
+      "endTime": 3,
+      "content": {
+        "title": "We automated our Twitter strategy.",
+        "subtitle": "Here's how."
+      }
+    },
+    {
+      "id": "problem",
+      "type": "captions",
+      "startTime": 3,
+      "endTime": 7,
+      "content": {
+        "captions": [
+          { "text": "Creating quality threads 3x a week?", "appearAt": 0, "disappearAt": 2, "size": "large" },
+          { "text": "That's hours of work.", "appearAt": 2.2, "size": "xlarge", "highlight": true }
+        ]
+      }
+    },
+    {
+      "id": "stage1",
+      "type": "workflow",
+      "startTime": 7,
+      "endTime": 14,
+      "content": {
+        "title": "STAGE 1: Content Discovery",
+        "nodes": [
+          { "label": "M/W/F 9AM", "type": "trigger", "icon": "schedule", "x": "center", "y": "top" },
+          { "label": "TechCrunch", "type": "integration", "icon": "rss" },
+          { "label": "Wired", "type": "integration", "icon": "rss" },
+          { "label": "MIT Tech", "type": "integration", "icon": "rss" },
+          { "label": "a16z", "type": "integration", "icon": "rss" },
+          { "label": "OhioX", "type": "integration", "icon": "rss" },
+          { "label": "Merge", "type": "flow", "icon": "merge", "x": "center", "y": "bottom" }
+        ],
+        "connections": [
+          { "from": "trigger", "to": "all-rss" },
+          { "from": "all-rss", "to": "merge" }
+        ],
+        "caption": "5 RSS feeds scan AI news"
+      }
+    },
+    {
+      "id": "stage2",
+      "type": "ai-thinking",
+      "startTime": 14,
+      "endTime": 23,
+      "content": {
+        "title": "STAGE 2: AI Topic Selection",
+        "prompts": [
+          { "text": "What does Transform Labs' audience care about?", "source": "Topic Selector Agent — Thinking...", "duration": 3 },
+          { "text": "What's NOT just hype?", "source": "Topic Selector Agent — Filtering...", "duration": 3 }
+        ],
+        "visualElements": {
+          "showArticleBoxes": true,
+          "highlightSelectedArticle": true
+        },
+        "agent": { "label": "Topic Selector", "type": "ai" },
+        "caption": "One article selected."
+      }
+    },
+    {
+      "id": "stage3",
+      "type": "agents",
+      "startTime": 23,
+      "endTime": 36.5,
+      "content": {
+        "title": "STAGE 3: The AI Writers Room",
+        "agents": [
+          { "name": "Outliner", "type": "ai", "workDescription": "structures the thread", "screenType": "outliner" },
+          { "name": "Writer", "type": "ai", "workDescription": "drafts each tweet", "screenType": "writer" },
+          { "name": "Critic", "type": "ai", "workDescription": "scores ruthlessly", "screenType": "critic" },
+          { "name": "Reviser", "type": "ai", "workDescription": "polishes the draft", "screenType": "reviser" }
+        ],
+        "flowVisualization": {
+          "showConnectionLines": true,
+          "sequentialActivation": true,
+          "flowDirection": "left-to-right"
+        },
+        "showWorkScreens": true,
+        "workScreenDuration": 3,
+        "caption": "4 AI agents work together..."
+      }
+    },
+    {
+      "id": "stage4",
+      "type": "quality-gate",
+      "startTime": 36.5,
+      "endTime": 45.5,
+      "content": {
+        "title": "STAGE 4: The Quality Gate",
+        "prompts": [
+          { "text": "Be ruthless. Default to REJECT.", "source": "Quality Critic Agent Prompt", "duration": 3 },
+          { "text": "If you're unsure, it's not good enough.", "source": "Quality Critic Agent Prompt", "duration": 3 }
+        ],
+        "scoreVisualization": {
+          "show": true,
+          "threshold": 8,
+          "maxScore": 10,
+          "displayScore": 8
+        },
+        "caption": "Nothing ships until it scores 8 out of 10"
+      }
+    },
+    {
+      "id": "stage5",
+      "type": "delivery",
+      "startTime": 45.5,
+      "endTime": 53.5,
+      "content": {
+        "title": "STAGE 5: Human in the Loop",
+        "screenshots": [
+          {
+            "file": "slack_pic2.png",
+            "title": "Content HQ — Thread Ready for Review",
+            "duration": 4,
+            "captions": [
+              { "text": "Thread lands in Content HQ", "duration": 1.5 },
+              { "text": "One-click human approval", "duration": 2, "highlight": true }
+            ]
+          },
+          {
+            "file": "slack_pic.png",
+            "title": "Slack — #marketing-twitter-posts",
+            "duration": 4,
+            "captions": [
+              { "text": "Slack pings the team — Thread posted!", "duration": 4 }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "results",
+      "type": "stats",
+      "startTime": 53.5,
+      "endTime": 64.5,
+      "content": {
+        "stats": [
+          { "value": "3x", "label": "per week" },
+          { "value": "8+", "label": "quality score" },
+          { "value": "100%", "label": "automated" }
+        ],
+        "closingCaption": {
+          "text": "Zero writer's block. Just results.",
+          "highlight": true
+        },
+        "logo": {
+          "show": true,
+          "position": "bottom",
+          "appearAt": 3.3
+        }
+      }
+    }
+  ],
+  "assets": {
+    "required": [
+      { "name": "Large_Logo.webp", "type": "logo", "description": "Main company logo" },
+      { "name": "Transform_Labs_Logo_E11_Text-Ba.webp", "type": "logo", "description": "Logo with company name" },
+      { "name": "slack_pic.png", "type": "screenshot", "description": "Slack notification - Thread Posted" },
+      { "name": "slack_pic2.png", "type": "screenshot", "description": "Content HQ - Thread Ready for Review" },
+      { "name": "no-copyright-music-hip-hop-333685.mp3", "type": "audio", "description": "Background music" }
+    ],
+    "location": "n8n-video/public/"
+  }
+}
