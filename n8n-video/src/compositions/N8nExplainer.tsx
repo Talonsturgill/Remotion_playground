@@ -9,39 +9,39 @@ import { Stats } from '../components/text/Stats';
 import { PromptHighlight } from '../components/text/PromptHighlight';
 import { Logo } from '../components/Logo';
 
-// Frame timings (30fps) - Extended for slower pacing
+// Frame timings (30fps) - 60 second video
 const FRAMES = {
-  // Hook: 0-4s (0-120 frames)
+  // Hook: 0-3s (0-90 frames)
   HOOK_START: 0,
-  HOOK_END: 120,
+  HOOK_END: 90,
 
-  // Problem: 4-9s (120-270 frames)
-  PROBLEM_START: 120,
-  PROBLEM_END: 270,
+  // Problem: 3-7s (90-210 frames)
+  PROBLEM_START: 90,
+  PROBLEM_END: 210,
 
-  // Stage 1 - Discovery: 9-18s (270-540 frames)
-  STAGE1_START: 270,
-  STAGE1_END: 540,
+  // Stage 1 - Discovery: 7-14s (210-420 frames)
+  STAGE1_START: 210,
+  STAGE1_END: 420,
 
-  // Stage 2 - Selection: 18-27s (540-810 frames)
-  STAGE2_START: 540,
-  STAGE2_END: 810,
+  // Stage 2 - Selection: 14-20s (420-600 frames)
+  STAGE2_START: 420,
+  STAGE2_END: 600,
 
-  // Stage 3 - Writers Room: 27-42s (810-1260 frames)
-  STAGE3_START: 810,
-  STAGE3_END: 1260,
+  // Stage 3 - Writers Room: 20-32s (600-960 frames)
+  STAGE3_START: 600,
+  STAGE3_END: 960,
 
-  // Stage 4 - Quality Gate with Prompts: 42-54s (1260-1620 frames)
-  STAGE4_START: 1260,
-  STAGE4_END: 1620,
+  // Stage 4 - Quality Gate: 32-42s (960-1260 frames)
+  STAGE4_START: 960,
+  STAGE4_END: 1260,
 
-  // Stage 5 - Delivery: 54-66s (1620-1980 frames)
-  STAGE5_START: 1620,
-  STAGE5_END: 1980,
+  // Stage 5 - Delivery: 42-50s (1260-1500 frames)
+  STAGE5_START: 1260,
+  STAGE5_END: 1500,
 
-  // Results + CTA: 66-75s (1980-2250 frames)
-  RESULTS_START: 1980,
-  RESULTS_END: 2250,
+  // Results + CTA: 50-60s (1500-1800 frames)
+  RESULTS_START: 1500,
+  RESULTS_END: 1800,
 };
 
 export const N8nExplainer: React.FC = () => {
@@ -52,38 +52,16 @@ export const N8nExplainer: React.FC = () => {
   const cx = width / 2;
   const cy = height / 2;
 
-  // Dynamic zoom effect - zoom in during key moments
-  const getZoom = () => {
-    // Stage 3: Zoom in on AI agents
-    if (frame >= FRAMES.STAGE3_START + 60 && frame < FRAMES.STAGE3_START + 200) {
-      const progress = (frame - FRAMES.STAGE3_START - 60) / 140;
-      return 1 + interpolate(progress, [0, 0.5, 1], [0, 0.15, 0], { extrapolateRight: 'clamp' });
-    }
-    // Stage 4: Zoom in on quality prompts
-    if (frame >= FRAMES.STAGE4_START + 20 && frame < FRAMES.STAGE4_START + 180) {
-      const progress = (frame - FRAMES.STAGE4_START - 20) / 160;
-      return 1 + interpolate(progress, [0, 0.3, 0.7, 1], [0, 0.12, 0.12, 0], { extrapolateRight: 'clamp' });
-    }
-    // Stage 5: Slight zoom on approval flow
-    if (frame >= FRAMES.STAGE5_START + 40 && frame < FRAMES.STAGE5_START + 160) {
-      const progress = (frame - FRAMES.STAGE5_START - 40) / 120;
-      return 1 + interpolate(progress, [0, 0.5, 1], [0, 0.1, 0], { extrapolateRight: 'clamp' });
-    }
-    return 1;
-  };
-
-  const zoom = getZoom();
-
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(135deg, ${theme.colors.background} 0%, #1a1a2e 100%)`,
+        background: `linear-gradient(145deg, #0a0a12 0%, #0F172A 50%, #1a1a2e 100%)`,
       }}
     >
       {/* Background music */}
       <Audio
         src={staticFile('no-copyright-music-hip-hop-333685.mp3')}
-        volume={0.7}
+        volume={0.6}
       />
 
       {/* Animated background grid */}
@@ -92,26 +70,30 @@ export const N8nExplainer: React.FC = () => {
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            linear-gradient(rgba(0,160,228,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,160,228,0.03) 1px, transparent 1px)
+            linear-gradient(rgba(0,160,228,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,160,228,0.05) 1px, transparent 1px)
           `,
-          backgroundSize: '40px 40px',
-          transform: `translateY(${(frame * 0.3) % 40}px)`,
+          backgroundSize: '50px 50px',
+          transform: `translateY(${(frame * 0.5) % 50}px)`,
         }}
       />
 
-      {/* Zoom wrapper for dynamic focus */}
+      {/* Glowing accent in background */}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
-          transform: `scale(${zoom})`,
-          transformOrigin: 'center center',
+          top: '20%',
+          left: '50%',
+          width: 600,
+          height: 600,
+          background: `radial-gradient(circle, ${theme.colors.primary}15 0%, transparent 70%)`,
+          transform: 'translateX(-50%)',
+          filter: 'blur(60px)',
         }}
-      >
+      />
 
-      {/* Logo watermark */}
-      <Logo appearAt={0} position="corner" size={40} />
+      {/* Logo watermark - top right */}
+      <Logo appearAt={0} position="corner" size={35} />
 
       {/* ========== HOOK SECTION ========== */}
       <Sequence from={FRAMES.HOOK_START} durationInFrames={FRAMES.HOOK_END - FRAMES.HOOK_START}>
@@ -127,15 +109,15 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="Creating quality threads 3x a week?"
           appearAt={0}
-          disappearAt={70}
+          disappearAt={60}
           position="center"
           size="large"
         />
         <Caption
           text="That's hours of work."
-          appearAt={75}
+          appearAt={65}
           position="center"
-          size="large"
+          size="xlarge"
           highlight
         />
       </Sequence>
@@ -157,9 +139,9 @@ export const N8nExplainer: React.FC = () => {
           type="trigger"
           icon="schedule"
           x={cx - 300}
-          y={cy - 100}
-          appearAt={20}
-          isActive={frame - FRAMES.STAGE1_START > 30}
+          y={cy - 80}
+          appearAt={15}
+          isActive={frame - FRAMES.STAGE1_START > 25}
         />
 
         {/* RSS Feeds */}
@@ -170,10 +152,10 @@ export const N8nExplainer: React.FC = () => {
             type="integration"
             icon="rss"
             x={cx - 50}
-            y={cy - 180 + i * 80}
-            appearAt={40 + i * 10}
-            isActive={frame - FRAMES.STAGE1_START > 60 + i * 10}
-            scale={0.7}
+            y={cy - 160 + i * 70}
+            appearAt={30 + i * 8}
+            isActive={frame - FRAMES.STAGE1_START > 50 + i * 8}
+            scale={0.65}
           />
         ))}
 
@@ -184,31 +166,31 @@ export const N8nExplainer: React.FC = () => {
           icon="merge"
           x={cx + 200}
           y={cy - 20}
-          appearAt={100}
-          isActive={frame - FRAMES.STAGE1_START > 120}
+          appearAt={80}
+          isActive={frame - FRAMES.STAGE1_START > 100}
         />
 
         {/* Connections */}
         <ConnectionLine
           fromX={cx - 260}
-          fromY={cy - 100}
+          fromY={cy - 80}
           toX={cx - 90}
           toY={cy - 20}
-          appearAt={50}
-          isActive={frame - FRAMES.STAGE1_START > 60}
+          appearAt={40}
+          isActive={frame - FRAMES.STAGE1_START > 50}
         />
         <ConnectionLine
           fromX={cx + 30}
           fromY={cy - 20}
           toX={cx + 160}
           toY={cy - 20}
-          appearAt={100}
-          isActive={frame - FRAMES.STAGE1_START > 120}
+          appearAt={80}
+          isActive={frame - FRAMES.STAGE1_START > 100}
         />
 
         <Caption
           text="5 RSS feeds scan AI news every morning"
-          appearAt={130}
+          appearAt={110}
           position="bottom"
           size="medium"
         />
@@ -219,7 +201,7 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 2: AI Topic Selection"
           appearAt={0}
-          disappearAt={200}
+          disappearAt={170}
           position="top"
           size="medium"
           highlight
@@ -229,7 +211,7 @@ export const N8nExplainer: React.FC = () => {
         {[0, 1, 2, 3, 4].map((i) => {
           const fadeOut = interpolate(
             frame - FRAMES.STAGE2_START,
-            [60 + i * 10, 80 + i * 10],
+            [50 + i * 8, 70 + i * 8],
             [1, i === 2 ? 1 : 0],
             { extrapolateRight: 'clamp', extrapolateLeft: 'clamp' }
           );
@@ -238,17 +220,16 @@ export const N8nExplainer: React.FC = () => {
               key={i}
               style={{
                 position: 'absolute',
-                left: cx - 200 + i * 30,
-                top: cy - 100 + i * 20,
-                width: 120,
-                height: 80,
+                left: cx - 180 + i * 25,
+                top: cy - 80 + i * 18,
+                width: 100,
+                height: 65,
                 background: i === 2 ? theme.colors.primary : theme.colors.backgroundLight,
                 borderRadius: 8,
-                opacity: fadeOut * (frame - FRAMES.STAGE2_START > 20 + i * 5 ? 1 : 0),
+                opacity: fadeOut * (frame - FRAMES.STAGE2_START > 15 + i * 5 ? 1 : 0),
                 border: i === 2 ? `3px solid ${theme.colors.primary}` : 'none',
-                boxShadow: i === 2 ? `0 0 30px ${theme.colors.primary}60` : 'none',
-                transform: `scale(${i === 2 && frame - FRAMES.STAGE2_START > 100 ? 1.2 : 1})`,
-                transition: 'transform 0.3s',
+                boxShadow: i === 2 ? `0 0 40px ${theme.colors.primary}80` : 'none',
+                transform: `scale(${i === 2 && frame - FRAMES.STAGE2_START > 80 ? 1.3 : 1})`,
               }}
             />
           );
@@ -259,22 +240,22 @@ export const N8nExplainer: React.FC = () => {
           label="Topic Selector"
           type="ai"
           icon="ai"
-          x={cx + 150}
+          x={cx + 130}
           y={cy}
-          appearAt={40}
-          isActive={frame - FRAMES.STAGE2_START > 50}
+          appearAt={35}
+          isActive={frame - FRAMES.STAGE2_START > 45}
         />
 
         <Caption
           text="AI picks the ONE article worth talking about"
-          appearAt={100}
-          disappearAt={140}
+          appearAt={90}
+          disappearAt={130}
           position="bottom"
           size="medium"
         />
         <Caption
           text="Not clickbait. Stories that matter."
-          appearAt={145}
+          appearAt={135}
           position="bottom"
           size="medium"
           highlight
@@ -286,7 +267,7 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 3: The AI Writers Room"
           appearAt={0}
-          disappearAt={380}
+          disappearAt={340}
           position="top"
           size="medium"
           highlight
@@ -297,68 +278,68 @@ export const N8nExplainer: React.FC = () => {
           label="Outliner"
           type="ai"
           icon="ai"
-          x={cx - 250}
-          y={cy - 80}
-          appearAt={20}
-          isActive={frame - FRAMES.STAGE3_START > 40 && frame - FRAMES.STAGE3_START < 150}
+          x={cx - 280}
+          y={cy - 60}
+          appearAt={15}
+          isActive={frame - FRAMES.STAGE3_START > 30 && frame - FRAMES.STAGE3_START < 130}
         />
         <WorkflowNode
           label="Writer"
           type="ai"
           icon="ai"
-          x={cx - 50}
-          y={cy - 80}
-          appearAt={60}
-          isActive={frame - FRAMES.STAGE3_START > 100 && frame - FRAMES.STAGE3_START < 200}
+          x={cx - 80}
+          y={cy - 60}
+          appearAt={50}
+          isActive={frame - FRAMES.STAGE3_START > 80 && frame - FRAMES.STAGE3_START < 180}
         />
         <WorkflowNode
           label="Critic"
           type="ai"
           icon="ai"
-          x={cx + 150}
-          y={cy - 80}
-          appearAt={100}
-          isActive={frame - FRAMES.STAGE3_START > 150 && frame - FRAMES.STAGE3_START < 300}
+          x={cx + 120}
+          y={cy - 60}
+          appearAt={85}
+          isActive={frame - FRAMES.STAGE3_START > 130 && frame - FRAMES.STAGE3_START < 260}
         />
         <WorkflowNode
           label="Reviser"
           type="ai"
           icon="ai"
-          x={cx + 350}
-          y={cy - 80}
-          appearAt={140}
-          isActive={frame - FRAMES.STAGE3_START > 250}
+          x={cx + 320}
+          y={cy - 60}
+          appearAt={120}
+          isActive={frame - FRAMES.STAGE3_START > 220}
         />
 
         {/* Connections */}
         <ConnectionLine
-          fromX={cx - 210}
-          fromY={cy - 80}
-          toX={cx - 90}
-          toY={cy - 80}
-          appearAt={50}
-          isActive={frame - FRAMES.STAGE3_START > 80}
+          fromX={cx - 240}
+          fromY={cy - 60}
+          toX={cx - 120}
+          toY={cy - 60}
+          appearAt={40}
+          isActive={frame - FRAMES.STAGE3_START > 65}
         />
         <ConnectionLine
-          fromX={cx - 10}
-          fromY={cy - 80}
-          toX={cx + 110}
-          toY={cy - 80}
-          appearAt={90}
-          isActive={frame - FRAMES.STAGE3_START > 130}
+          fromX={cx - 40}
+          fromY={cy - 60}
+          toX={cx + 80}
+          toY={cy - 60}
+          appearAt={75}
+          isActive={frame - FRAMES.STAGE3_START > 110}
         />
         <ConnectionLine
-          fromX={cx + 190}
-          fromY={cy - 80}
-          toX={cx + 310}
-          toY={cy - 80}
-          appearAt={130}
-          isActive={frame - FRAMES.STAGE3_START > 200}
+          fromX={cx + 160}
+          fromY={cy - 60}
+          toX={cx + 280}
+          toY={cy - 60}
+          appearAt={110}
+          isActive={frame - FRAMES.STAGE3_START > 180}
         />
 
         <Caption
           text="One outlines. One writes. One critiques. One revises."
-          appearAt={180}
+          appearAt={160}
           position="bottom"
           size="medium"
         />
@@ -369,7 +350,7 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 4: The Quality Gate"
           appearAt={0}
-          disappearAt={60}
+          disappearAt={50}
           position="top"
           size="medium"
           highlight
@@ -379,19 +360,19 @@ export const N8nExplainer: React.FC = () => {
         <PromptHighlight
           text="Be ruthless. Default to REJECT."
           source="Quality Critic Agent Prompt"
-          appearAt={30}
-          disappearAt={120}
+          appearAt={25}
+          disappearAt={110}
         />
 
         <PromptHighlight
           text="If you're unsure, it's not good enough."
           source="Quality Critic Agent Prompt"
-          appearAt={130}
-          disappearAt={220}
+          appearAt={115}
+          disappearAt={200}
         />
 
         {/* Quality Gate visualization */}
-        {frame - FRAMES.STAGE4_START > 220 && (
+        {frame - FRAMES.STAGE4_START > 200 && (
           <>
             <WorkflowNode
               label="Quality Gate"
@@ -399,7 +380,7 @@ export const N8nExplainer: React.FC = () => {
               icon="quality"
               x={cx}
               y={cy - 50}
-              appearAt={220}
+              appearAt={200}
               isActive
             />
 
@@ -407,34 +388,34 @@ export const N8nExplainer: React.FC = () => {
             <div
               style={{
                 position: 'absolute',
-                left: cx - 100,
-                top: cy + 80,
-                width: 200,
-                height: 24,
+                left: cx - 120,
+                top: cy + 70,
+                width: 240,
+                height: 28,
                 background: theme.colors.backgroundLight,
-                borderRadius: 12,
+                borderRadius: 14,
                 overflow: 'hidden',
                 border: `2px solid ${theme.colors.surface}`,
               }}
             >
               <div
                 style={{
-                  width: `${interpolate(frame - FRAMES.STAGE4_START - 220, [0, 50], [0, 80], { extrapolateRight: 'clamp' })}%`,
+                  width: `${interpolate(frame - FRAMES.STAGE4_START - 200, [0, 40], [0, 80], { extrapolateRight: 'clamp' })}%`,
                   height: '100%',
                   background: `linear-gradient(90deg, ${theme.colors.warning}, ${theme.colors.success})`,
-                  borderRadius: 10,
+                  borderRadius: 12,
                 }}
               />
             </div>
             <div
               style={{
                 position: 'absolute',
-                left: cx - 100,
-                top: cy + 115,
-                width: 200,
+                left: cx - 120,
+                top: cy + 108,
+                width: 240,
                 textAlign: 'center',
-                fontSize: 24,
-                fontWeight: 700,
+                fontSize: 28,
+                fontWeight: 800,
                 color: theme.colors.success,
                 fontFamily: theme.fonts.primary,
               }}
@@ -446,7 +427,7 @@ export const N8nExplainer: React.FC = () => {
 
         <Caption
           text="Nothing ships until it scores 8 out of 10"
-          appearAt={250}
+          appearAt={230}
           position="bottom"
           size="medium"
         />
@@ -457,7 +438,7 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="STAGE 5: Human in the Loop"
           appearAt={0}
-          disappearAt={80}
+          disappearAt={70}
           position="top"
           size="medium"
           highlight
@@ -470,8 +451,8 @@ export const N8nExplainer: React.FC = () => {
           icon="notion"
           x={cx - 150}
           y={cy - 50}
-          appearAt={20}
-          isActive={frame - FRAMES.STAGE5_START > 30 && frame - FRAMES.STAGE5_START < 120}
+          appearAt={15}
+          isActive={frame - FRAMES.STAGE5_START > 25 && frame - FRAMES.STAGE5_START < 100}
         />
 
         {/* Human Approval */}
@@ -481,8 +462,8 @@ export const N8nExplainer: React.FC = () => {
           icon="quality"
           x={cx}
           y={cy - 50}
-          appearAt={50}
-          isActive={frame - FRAMES.STAGE5_START > 60 && frame - FRAMES.STAGE5_START < 140}
+          appearAt={40}
+          isActive={frame - FRAMES.STAGE5_START > 50 && frame - FRAMES.STAGE5_START < 120}
         />
 
         {/* Slack notification */}
@@ -492,8 +473,8 @@ export const N8nExplainer: React.FC = () => {
           icon="slack"
           x={cx + 150}
           y={cy - 50}
-          appearAt={80}
-          isActive={frame - FRAMES.STAGE5_START > 100}
+          appearAt={65}
+          isActive={frame - FRAMES.STAGE5_START > 85}
         />
 
         <ConnectionLine
@@ -501,36 +482,36 @@ export const N8nExplainer: React.FC = () => {
           fromY={cy - 50}
           toX={cx - 40}
           toY={cy - 50}
-          appearAt={40}
-          isActive={frame - FRAMES.STAGE5_START > 50}
+          appearAt={30}
+          isActive={frame - FRAMES.STAGE5_START > 40}
         />
         <ConnectionLine
           fromX={cx + 40}
           fromY={cy - 50}
           toX={cx + 110}
           toY={cy - 50}
-          appearAt={70}
-          isActive={frame - FRAMES.STAGE5_START > 90}
+          appearAt={55}
+          isActive={frame - FRAMES.STAGE5_START > 75}
         />
 
         <Caption
           text="Thread lands in Content HQ"
-          appearAt={30}
-          disappearAt={90}
+          appearAt={25}
+          disappearAt={75}
           position="bottom"
           size="medium"
         />
         <Caption
           text="One-click human approval"
-          appearAt={95}
-          disappearAt={155}
+          appearAt={80}
+          disappearAt={130}
           position="bottom"
           size="medium"
           highlight
         />
         <Caption
           text="Then Slack pings the team"
-          appearAt={160}
+          appearAt={135}
           position="bottom"
           size="medium"
         />
@@ -549,18 +530,16 @@ export const N8nExplainer: React.FC = () => {
 
         <Caption
           text="Zero writer's block. Just results."
-          appearAt={80}
-          disappearAt={160}
+          appearAt={60}
+          disappearAt={140}
           position="bottom"
           size="large"
           highlight
         />
 
         {/* Final logo - positioned at bottom */}
-        <Logo appearAt={120} position="bottom" size={50} />
+        <Logo appearAt={100} position="bottom" size={60} />
       </Sequence>
-
-      </div>{/* End zoom wrapper */}
     </AbsoluteFill>
   );
 };

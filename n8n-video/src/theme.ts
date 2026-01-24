@@ -39,7 +39,7 @@ export const theme = {
     width: 1080,
     height: 1080,
     fps: 30,
-    durationInSeconds: 75,
+    durationInSeconds: 60,
   },
 };
 
