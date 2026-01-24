@@ -423,46 +423,82 @@ export const N8nExplainer: React.FC = () => {
       {/* ========== STAGE 5: DELIVERY ========== */}
       <Sequence from={FRAMES.STAGE5_START} durationInFrames={FRAMES.STAGE5_END - FRAMES.STAGE5_START}>
         <Caption
-          text="STAGE 5: Publish & Notify"
+          text="STAGE 5: Human in the Loop"
           appearAt={0}
-          disappearAt={200}
+          disappearAt={80}
           position="top"
           size="medium"
           highlight
         />
 
-        {/* Notion and Slack */}
+        {/* Content HQ (Notion) */}
         <WorkflowNode
-          label="Notion"
+          label="Content HQ"
           type="integration"
           icon="notion"
-          x={cx - 100}
+          x={cx - 150}
           y={cy - 50}
           appearAt={20}
-          isActive={frame - FRAMES.STAGE5_START > 40}
+          isActive={frame - FRAMES.STAGE5_START > 30 && frame - FRAMES.STAGE5_START < 120}
         />
+
+        {/* Human Approval */}
+        <WorkflowNode
+          label="Approve"
+          type="action"
+          icon="quality"
+          x={cx}
+          y={cy - 50}
+          appearAt={50}
+          isActive={frame - FRAMES.STAGE5_START > 60 && frame - FRAMES.STAGE5_START < 140}
+        />
+
+        {/* Slack notification */}
         <WorkflowNode
           label="Slack"
           type="integration"
           icon="slack"
-          x={cx + 100}
+          x={cx + 150}
           y={cy - 50}
-          appearAt={60}
-          isActive={frame - FRAMES.STAGE5_START > 80}
+          appearAt={80}
+          isActive={frame - FRAMES.STAGE5_START > 100}
         />
 
         <ConnectionLine
-          fromX={cx - 60}
+          fromX={cx - 110}
           fromY={cy - 50}
-          toX={cx + 60}
+          toX={cx - 40}
           toY={cy - 50}
-          appearAt={80}
-          isActive
+          appearAt={40}
+          isActive={frame - FRAMES.STAGE5_START > 50}
+        />
+        <ConnectionLine
+          fromX={cx + 40}
+          fromY={cy - 50}
+          toX={cx + 110}
+          toY={cy - 50}
+          appearAt={70}
+          isActive={frame - FRAMES.STAGE5_START > 90}
         />
 
         <Caption
-          text="Thread lands in Notion. Team gets a Slack ping."
-          appearAt={100}
+          text="Thread lands in Content HQ"
+          appearAt={30}
+          disappearAt={90}
+          position="bottom"
+          size="medium"
+        />
+        <Caption
+          text="One-click human approval"
+          appearAt={95}
+          disappearAt={155}
+          position="bottom"
+          size="medium"
+          highlight
+        />
+        <Caption
+          text="Then Slack pings the team"
+          appearAt={160}
           position="bottom"
           size="medium"
         />
