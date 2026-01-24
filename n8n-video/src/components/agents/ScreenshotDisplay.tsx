@@ -18,7 +18,7 @@ export const ScreenshotDisplay: React.FC<ScreenshotDisplayProps> = ({
   scale = 1,
 }) => {
   const frame = useCurrentFrame();
-  const { fps, width, height } = useVideoConfig();
+  const { fps } = useVideoConfig();
 
   if (frame < appearAt) return null;
   if (disappearAt && frame > disappearAt) return null;
