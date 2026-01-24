@@ -226,7 +226,7 @@ export const N8nExplainer: React.FC = () => {
           disappearAt={195}
         />
 
-        {/* Articles coming in and being filtered */}
+        {/* Articles coming in and being filtered - positioned below the text */}
         {[0, 1, 2, 3, 4].map((i) => {
           const fadeOut = interpolate(
             frame - FRAMES.STAGE2_START,
@@ -239,8 +239,8 @@ export const N8nExplainer: React.FC = () => {
               key={i}
               style={{
                 position: 'absolute',
-                left: cx - 180 + i * 25,
-                top: cy - 80 + i * 18,
+                left: cx - 180 + i * 80,
+                top: cy + 120 + (i % 2) * 30,
                 width: 100,
                 height: 65,
                 background: i === 2 ? theme.colors.primary : theme.colors.backgroundLight,
