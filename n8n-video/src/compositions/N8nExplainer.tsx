@@ -146,48 +146,46 @@ export const N8nExplainer: React.FC = () => {
           isActive={frame - FRAMES.STAGE1_START > 25}
         />
 
-        {/* RSS Feeds - LARGE so viewers see the credible sources */}
-        {['TechCrunch', 'Wired', 'MIT Tech', 'a16z', 'OhioX'].map((name, i) => (
+        {/* RSS Feeds - spread out horizontally so names are visible */}
+        {[
+          { name: 'TechCrunch', x: cx - 280, y: cy - 120 },
+          { name: 'Wired', x: cx - 140, y: cy + 20 },
+          { name: 'MIT Tech', x: cx, y: cy - 120 },
+          { name: 'a16z', x: cx + 140, y: cy + 20 },
+          { name: 'OhioX', x: cx + 280, y: cy - 120 },
+        ].map((feed, i) => (
           <WorkflowNode
-            key={name}
-            label={name}
+            key={feed.name}
+            label={feed.name}
             type="integration"
             icon="rss"
-            x={cx}
-            y={cy - 200 + i * 90}
+            x={feed.x}
+            y={feed.y}
             appearAt={30 + i * 8}
             isActive={frame - FRAMES.STAGE1_START > 50 + i * 8}
             scale={1}
           />
         ))}
 
-        {/* Merge node */}
+        {/* Merge node - centered below the feeds */}
         <WorkflowNode
           label="Merge"
           type="flow"
           icon="merge"
-          x={cx + 200}
-          y={cy - 20}
+          x={cx}
+          y={cy + 160}
           appearAt={80}
           isActive={frame - FRAMES.STAGE1_START > 100}
         />
 
-        {/* Connections */}
+        {/* Connection from trigger */}
         <ConnectionLine
           fromX={cx - 260}
           fromY={cy - 80}
-          toX={cx - 90}
-          toY={cy - 20}
+          toX={cx - 280}
+          toY={cy - 160}
           appearAt={40}
           isActive={frame - FRAMES.STAGE1_START > 50}
-        />
-        <ConnectionLine
-          fromX={cx + 30}
-          fromY={cy - 20}
-          toX={cx + 160}
-          toY={cy - 20}
-          appearAt={80}
-          isActive={frame - FRAMES.STAGE1_START > 100}
         />
 
         <Caption
