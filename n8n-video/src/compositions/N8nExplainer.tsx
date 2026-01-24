@@ -193,7 +193,7 @@ export const N8nExplainer: React.FC = () => {
         <ConnectionLine fromX={cx + 280} fromY={cy + 20} toX={cx} toY={cy + 220} appearAt={90} isActive={frame - FRAMES.STAGE1_START > 105} />
 
         <Caption
-          text="5 RSS feeds scan AI news every morning"
+          text="5 RSS feeds scan AI news"
           appearAt={110}
           position="bottom"
           size="medium"
