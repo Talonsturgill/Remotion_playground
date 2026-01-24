@@ -1,0 +1,87 @@
+{
+  "video": {
+    "title": "YOUR VIDEO TITLE",
+    "description": "Brief description of what this video explains",
+    "width": 1080,
+    "height": 1080,
+    "fps": 30,
+    "durationInSeconds": 60
+  },
+  "branding": {
+    "primaryColor": "#00A0E4",
+    "companyName": "Your Company",
+    "logoFile": "your-logo.webp"
+  },
+  "audio": {
+    "backgroundMusic": "background-music.mp3",
+    "volume": 0.6
+  },
+  "stages": [
+    {
+      "id": "hook",
+      "type": "title",
+      "startTime": 0,
+      "endTime": 3,
+      "content": {
+        "title": "Your attention-grabbing headline",
+        "subtitle": "Optional subtitle"
+      }
+    },
+    {
+      "id": "problem",
+      "type": "captions",
+      "startTime": 3,
+      "endTime": 7,
+      "content": {
+        "captions": [
+          { "text": "State the problem your audience has", "duration": 2 },
+          { "text": "Make it relatable.", "duration": 2, "highlight": true }
+        ]
+      }
+    },
+    {
+      "id": "solution",
+      "type": "workflow",
+      "startTime": 7,
+      "endTime": 20,
+      "content": {
+        "title": "STAGE 1: Your First Step",
+        "nodes": [
+          { "label": "Trigger", "type": "trigger", "icon": "schedule" },
+          { "label": "Step 1", "type": "integration", "icon": "rss" },
+          { "label": "Step 2", "type": "ai", "icon": "ai" },
+          { "label": "Output", "type": "flow", "icon": "merge" }
+        ],
+        "caption": "Describe what happens here"
+      }
+    },
+    {
+      "id": "results",
+      "type": "stats",
+      "startTime": 50,
+      "endTime": 60,
+      "content": {
+        "stats": [
+          { "value": "10x", "label": "faster" },
+          { "value": "99%", "label": "accuracy" },
+          { "value": "0", "label": "manual work" }
+        ],
+        "closingCaption": {
+          "text": "Your powerful closing statement.",
+          "highlight": true
+        },
+        "logo": {
+          "show": true,
+          "position": "bottom"
+        }
+      }
+    }
+  ],
+  "assets": {
+    "required": [
+      { "name": "your-logo.webp", "type": "logo" },
+      { "name": "background-music.mp3", "type": "audio" }
+    ],
+    "location": "n8n-video/public/"
+  }
+}
