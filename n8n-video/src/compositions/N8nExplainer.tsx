@@ -482,13 +482,14 @@ export const N8nExplainer: React.FC = () => {
         <Caption
           text="Zero writer's block. Just results."
           appearAt={80}
+          disappearAt={160}
           position="bottom"
           size="large"
           highlight
         />
 
-        {/* Final logo */}
-        <Logo appearAt={120} position="center" size={80} />
+        {/* Final logo - positioned at bottom */}
+        <Logo appearAt={120} position="bottom" size={50} />
       </Sequence>
     </AbsoluteFill>
   );
