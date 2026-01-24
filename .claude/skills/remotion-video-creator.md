@@ -1,384 +1,307 @@
 # Remotion Video Creator Skill
 
-## Overview
-This skill enables creating professional explainer videos for n8n workflows using Remotion. Given a JSON configuration, Claude will generate all necessary components, render the video via GitHub Actions, and deliver a downloadable MP4.
+## TLDR - What Claude Does
 
-## Quick Start
-When a user provides a video JSON config (or asks to create a video), follow this workflow:
+When user uploads a workflow JSON or describes a video:
 
-1. **Parse the JSON config** - Extract video metadata, stages, branding, and assets
-2. **Generate/update Remotion components** - Create the composition and all visual components
-3. **Ensure assets are in place** - Verify logos, screenshots, music are in `n8n-video/public/`
-4. **Commit and push** - Push to feature branch
-5. **Trigger render** - Merge to main or instruct user to trigger GitHub Action
-6. **Deliver** - Guide user to download the artifact
+1. **Parse** → Extract stages, branding, assets needed
+2. **Check Assets** → Verify all required files exist in `n8n-video/public/`, ask user to upload ANY that are missing
+3. **Generate Code** → Create/update the Remotion composition
+4. **Validate** → Run `npx tsc --noEmit` before committing
+5. **Commit ALL** → Stage everything including binary assets
+6. **Push & Merge** → Push to branch, merge to main
+7. **Wait** → Tell user to check Actions tab in ~5-10 min
+8. **Deliver** → Guide to download artifact
+
+**CRITICAL**: Never push without validating. Never forget binary assets. Never use wrong render command.
 
 ---
 
-## JSON Configuration Schema
+## Workflow JSON Schema
+
+User provides this (or Claude generates from description):
 
 ```json
 {
-  "video": {
-    "title": "Video title for reference",
-    "width": 1080,
-    "height": 1080,
-    "fps": 30,
-    "durationInSeconds": 65
+  "workflow": {
+    "name": "Workflow Name",
+    "description": "What this automation does",
+    "trigger": "What starts it (schedule, webhook, etc.)",
+    "steps": [
+      { "name": "Step 1", "type": "trigger|integration|ai|flow", "description": "What it does" },
+      { "name": "Step 2", "type": "ai", "description": "AI processing step" }
+    ],
+    "output": "Final result"
   },
   "branding": {
+    "company": "Company Name",
     "primaryColor": "#00A0E4",
-    "companyName": "Transform Labs",
-    "logoFile": "Large_Logo.webp",
-    "logoWithTextFile": "Transform_Labs_Logo_E11_Text-Ba.webp"
+    "logo": "filename.webp"
   },
-  "audio": {
-    "backgroundMusic": "no-copyright-music-hip-hop-333685.mp3",
-    "volume": 0.6
+  "video": {
+    "hook": "Attention-grabbing opening line",
+    "problem": "Pain point this solves",
+    "duration": 60
   },
-  "stages": [
-    {
-      "id": "hook",
-      "type": "title",
-      "duration": 3,
-      "content": {
-        "title": "We automated our Twitter strategy.",
-        "subtitle": "Here's how."
-      }
-    },
-    {
-      "id": "problem",
-      "type": "captions",
-      "duration": 4,
-      "content": {
-        "captions": [
-          { "text": "Creating quality threads 3x a week?", "duration": 2 },
-          { "text": "That's hours of work.", "duration": 2, "highlight": true }
-        ]
-      }
-    },
-    {
-      "id": "stage1",
-      "type": "workflow",
-      "duration": 7,
-      "content": {
-        "title": "STAGE 1: Content Discovery",
-        "nodes": [
-          { "label": "M/W/F 9AM", "type": "trigger", "icon": "schedule", "position": "top-center" },
-          { "label": "TechCrunch", "type": "integration", "icon": "rss" },
-          { "label": "Wired", "type": "integration", "icon": "rss" },
-          { "label": "MIT Tech", "type": "integration", "icon": "rss" },
-          { "label": "Merge", "type": "flow", "icon": "merge", "position": "bottom-center" }
-        ],
-        "connections": "auto",
-        "caption": "5 RSS feeds scan AI news"
-      }
-    },
-    {
-      "id": "stage2",
-      "type": "ai-thinking",
-      "duration": 9,
-      "content": {
-        "title": "STAGE 2: AI Topic Selection",
-        "prompts": [
-          { "text": "What does Transform Labs' audience care about?", "source": "Topic Selector Agent — Thinking..." },
-          { "text": "What's NOT just hype?", "source": "Topic Selector Agent — Filtering..." }
-        ],
-        "agent": { "label": "Topic Selector", "type": "ai" },
-        "caption": "One article selected."
-      }
-    },
-    {
-      "id": "stage3",
-      "type": "agents",
-      "duration": 13.5,
-      "content": {
-        "title": "STAGE 3: The AI Writers Room",
-        "agents": [
-          { "name": "Outliner", "description": "structures the thread" },
-          { "name": "Writer", "description": "drafts each tweet" },
-          { "name": "Critic", "description": "scores ruthlessly" },
-          { "name": "Reviser", "description": "polishes the final draft" }
-        ],
-        "showWorkScreens": true,
-        "sequentialActivation": true,
-        "caption": "4 AI agents work together..."
-      }
-    },
-    {
-      "id": "stage4",
-      "type": "quality-gate",
-      "duration": 9,
-      "content": {
-        "title": "STAGE 4: The Quality Gate",
-        "prompts": [
-          { "text": "Be ruthless. Default to REJECT.", "source": "Quality Critic Agent Prompt" },
-          { "text": "If you're unsure, it's not good enough.", "source": "Quality Critic Agent Prompt" }
-        ],
-        "scoreThreshold": 8,
-        "caption": "Nothing ships until it scores 8 out of 10"
-      }
-    },
-    {
-      "id": "stage5",
-      "type": "delivery",
-      "duration": 8,
-      "content": {
-        "title": "STAGE 5: Human in the Loop",
-        "screenshots": [
-          { "file": "slack_pic2.png", "title": "Content HQ — Thread Ready for Review", "duration": 4 },
-          { "file": "slack_pic.png", "title": "Slack — #marketing-twitter-posts", "duration": 4 }
-        ],
-        "captions": [
-          { "text": "Thread lands in Content HQ", "duration": 2 },
-          { "text": "One-click human approval", "duration": 2, "highlight": true },
-          { "text": "Slack pings the team — Thread posted!", "duration": 4 }
-        ]
-      }
-    },
-    {
-      "id": "results",
-      "type": "stats",
-      "duration": 11,
-      "content": {
-        "stats": [
-          { "value": "3x", "label": "per week" },
-          { "value": "8+", "label": "quality score" },
-          { "value": "100%", "label": "automated" }
-        ],
-        "closingCaption": "Zero writer's block. Just results.",
-        "showLogo": true
-      }
-    }
-  ]
+  "assets": {
+    "logo": "logo.webp",
+    "screenshots": ["screen1.png", "screen2.png"],
+    "music": "background.mp3"
+  }
 }
 ```
 
 ---
 
-## Project Structure
+## Pre-Flight Checklist (DO THIS EVERY TIME)
 
+Before writing any code, verify:
+
+```bash
+# 1. Check what assets exist
+ls -la n8n-video/public/
+
+# 2. Check what assets are needed (from JSON config)
+# Compare against the config's assets section
+
+# 3. If ANY assets are missing, STOP and ask user to upload them to:
+#    n8n-video/public/
 ```
-n8n-video/
-├── public/                          # Static assets (MUST commit these!)
-│   ├── Large_Logo.webp              # Main logo
-│   ├── Transform_Labs_Logo_E11_Text-Ba.webp  # Logo with text
-│   ├── slack_pic.png                # Screenshot 1
-│   ├── slack_pic2.png               # Screenshot 2
-│   └── no-copyright-music-hip-hop-333685.mp3  # Background music
-├── src/
-│   ├── index.ts                     # Entry point - registers compositions
-│   ├── theme.ts                     # Colors, fonts, video settings
-│   ├── compositions/
-│   │   └── N8nExplainer.tsx         # Main video composition
-│   └── components/
-│       ├── Logo.tsx                 # Logo component
-│       ├── nodes/
-│       │   └── WorkflowNode.tsx     # n8n-style workflow nodes
-│       ├── canvas/
-│       │   └── ConnectionLine.tsx   # Animated connection lines
-│       ├── text/
-│       │   ├── Caption.tsx          # Text captions
-│       │   ├── Title.tsx            # Title screens
-│       │   ├── Stats.tsx            # Statistics display
-│       │   └── PromptHighlight.tsx  # AI prompt display
-│       └── agents/
-│           ├── AgentWorkScreen.tsx  # Agent "working" animation
-│           └── ScreenshotDisplay.tsx # Screenshot in monitor frame
-├── remotion.config.ts               # Remotion configuration
-└── package.json
-```
+
+**Missing assets = render failure. Always check first.**
 
 ---
 
-## Key Components Reference
+## Asset Requirements
 
-### Theme (`src/theme.ts`)
-```typescript
-export const theme = {
-  colors: {
-    primary: '#00A0E4',        // Transform Labs blue
-    primaryDark: '#0077b5',
-    primaryLight: '#33b5eb',
-    background: '#0F172A',     // Dark blue-gray
-    surface: '#1E293B',
-    textPrimary: '#F8FAFC',
-    success: '#22C55E',
-    warning: '#F59E0B',
-  },
-  fonts: {
-    primary: 'Inter, system-ui, sans-serif',
-  },
-  video: {
-    width: 1080,
-    height: 1080,
-    fps: 30,
-    durationInSeconds: 65,
-  },
-};
+### Required for EVERY video:
+| Asset | Format | Location | Notes |
+|-------|--------|----------|-------|
+| Logo | .webp or .png | `n8n-video/public/` | Used in corner + end card |
+| Music | .mp3 | `n8n-video/public/` | Background track, ~0.6 volume |
+
+### Optional per video:
+| Asset | Format | Location | Notes |
+|-------|--------|----------|-------|
+| Screenshots | .png | `n8n-video/public/` | Real UI screenshots for credibility |
+| Logo with text | .webp | `n8n-video/public/` | For end card if different from main logo |
+
+### How to get assets from user:
+User CANNOT upload binary files through chat. They must:
+1. Upload directly to GitHub (`n8n-video/public/` folder)
+2. Or provide a URL Claude can fetch from
+
+**Tell user exactly what files are needed and where to put them.**
+
+---
+
+## Code Generation
+
+### Video Structure (standard template)
+
+```
+0-3s     HOOK         - Bold statement that grabs attention
+3-7s     PROBLEM      - Pain point the audience relates to
+7-20s    STAGE 1      - First part of the workflow
+20-35s   STAGE 2-3    - Middle stages (AI agents, processing)
+35-45s   STAGE 4      - Quality gate / validation
+45-55s   STAGE 5      - Delivery / human approval
+55-65s   RESULTS      - Stats + logo + CTA
 ```
 
-### Frame Timing Pattern
+### Frame Calculation
 ```typescript
-// 30fps - calculate frames from seconds
-const FRAMES = {
-  STAGE_START: secondsToFrames(startTime),  // startTime * 30
-  STAGE_END: secondsToFrames(endTime),      // endTime * 30
-};
+const fps = 30;
+const secondsToFrames = (s: number) => s * fps;
 
-// Use Sequences for timing
-<Sequence from={FRAMES.STAGE_START} durationInFrames={FRAMES.STAGE_END - FRAMES.STAGE_START}>
-  {/* Stage content */}
-</Sequence>
+// Example: Stage from 7s to 14s
+const STAGE1_START = secondsToFrames(7);  // 210
+const STAGE1_END = secondsToFrames(14);   // 420
 ```
 
-### Animation Patterns
+### Component Usage
+
 ```typescript
-// Smooth spring animation
+// Workflow nodes
+<WorkflowNode label="Name" type="trigger|integration|ai|flow" icon="schedule|rss|ai|merge" x={x} y={y} appearAt={frame} isActive={boolean} />
+
+// Connections with flowing animation
+<ConnectionLine fromX={x1} fromY={y1} toX={x2} toY={y2} appearAt={frame} isActive={boolean} />
+
+// Text
+<Title text="Main text" subtitle="Optional" appearAt={frame} />
+<Caption text="Caption" appearAt={frame} disappearAt={frame} position="top|center|bottom" size="medium|large|xlarge" highlight={boolean} />
+
+// AI prompts
+<PromptHighlight text="Prompt text" source="Agent Name" appearAt={frame} disappearAt={frame} />
+
+// Stats
+<Stats stats={[{value: "3x", label: "faster"}]} appearAt={frame} />
+
+// Screenshots
+<ScreenshotDisplay src="filename.png" title="Window Title" appearAt={frame} disappearAt={frame} />
+
+// Logo
+<Logo appearAt={frame} position="corner|center|bottom" size={50} />
+
+// Audio
+<Audio src={staticFile('music.mp3')} volume={0.6} />
+```
+
+### Animation Best Practices
+```typescript
+// Smooth springs (no choppiness)
 const progress = spring({
   frame: localFrame,
   fps,
   config: { damping: 20, stiffness: 100, mass: 0.8 },
 });
 
-// Interpolate values
+// Always clamp interpolations
 const opacity = interpolate(frame, [0, 30], [0, 1], { extrapolateRight: 'clamp' });
-const scale = interpolate(progress, [0, 1], [0.8, 1]);
-```
-
-### Loading Assets
-```typescript
-import { staticFile, Img, Audio } from 'remotion';
-
-// Images
-<Img src={staticFile('Large_Logo.webp')} />
-
-// Audio
-<Audio src={staticFile('music.mp3')} volume={0.6} />
 ```
 
 ---
 
-## GitHub Actions Workflow
+## Validation (MANDATORY)
 
-Located at `.github/workflows/render-video.yml`:
+Before committing, ALWAYS run:
 
-```yaml
-name: Render Video
+```bash
+cd /home/user/Remotion_playground/n8n-video && npx tsc --noEmit
+```
 
-on:
-  workflow_dispatch:  # Manual trigger
-  push:
-    branches: [main]
-    paths: ['n8n-video/**']
+If errors → fix them before proceeding.
 
-jobs:
-  render:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+---
 
-      - name: Install Chrome dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libcups2 \
-            libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 \
-            libxrandr2 libgbm1 libasound2t64 libpango-1.0-0 libcairo2 \
-            libnss3 libnspr4 libxss1 fonts-liberation xdg-utils
+## Git Workflow
 
-      - name: Install dependencies
-        working-directory: n8n-video
-        run: npm install
+```bash
+# 1. Stage EVERYTHING (especially binary assets!)
+git add -A
 
-      - name: Render video
-        working-directory: n8n-video
-        run: |
-          mkdir -p out
-          npx remotion render N8nExplainer out/video.mp4 --log=verbose
+# 2. Verify assets are staged
+git status
+# Should see: new file: n8n-video/public/logo.webp (etc)
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: rendered-video
-          path: n8n-video/out/video.mp4
-          retention-days: 30
+# 3. Commit with descriptive message
+git commit -m "Add [video name] - [brief description]"
+
+# 4. Push to feature branch
+git push -u origin claude/add-remotion-skill-mW5Tk
+
+# 5. Merge to main (triggers render)
+# Either create PR or guide user to merge
 ```
 
 ---
 
-## Workflow Checklist
+## GitHub Actions
 
-When creating a new video:
+The workflow at `.github/workflows/render-video.yml` auto-renders on push to main.
 
-### 1. Assets Required
-- [ ] Logo file (webp/png) → `n8n-video/public/`
-- [ ] Screenshots for any real UI displays → `n8n-video/public/`
-- [ ] Background music (mp3) → `n8n-video/public/`
-- [ ] **CRITICAL**: Commit binary assets to git!
-
-### 2. Code Updates
-- [ ] Update `theme.ts` with brand colors
-- [ ] Update composition in `src/compositions/`
-- [ ] Update `src/index.ts` if adding new compositions
-- [ ] Run `npx tsc --noEmit` to validate TypeScript
-
-### 3. Render
-- [ ] Commit and push to feature branch
-- [ ] Create PR to main and merge
-- [ ] Wait for GitHub Action to complete (~5-10 min)
-- [ ] Download artifact from Actions tab
-
-### 4. Delivery
-- [ ] Unzip artifact
-- [ ] Upload to Google Drive / Slack / social media
-
----
-
-## Common Issues & Solutions
-
-### "Could not find composition with ID"
-- The render command has wrong composition name
-- Check `src/index.ts` for registered composition IDs
-- Use: `npx remotion render CompositionId out/video.mp4`
-
-### "Failed to load resource: 404"
-- Asset file not in `public/` folder
-- Or asset not committed to git
-- Run: `git ls-tree -r HEAD --name-only | grep -E "\.(png|webp|mp3)$"`
-
-### "libasound2 not found" (Ubuntu 24.04)
-- Use `libasound2t64` instead of `libasound2`
-
-### Choppy animations
-- Increase spring damping: `{ damping: 20, stiffness: 100, mass: 0.8 }`
-- Extend transition durations
-
-### Elements overlapping
-- Adjust `appearAt` and `disappearAt` frame values
-- Check z-index via component render order (later = on top)
-
----
-
-## Example: Creating a New Video
-
-User provides:
-```json
-{
-  "video": { "title": "Email Automation", "durationInSeconds": 45 },
-  "branding": { "primaryColor": "#FF5733", "companyName": "Acme Corp" },
-  "stages": [
-    { "type": "title", "content": { "title": "We automated email outreach" } },
-    { "type": "workflow", "content": { "nodes": [...] } }
-  ]
-}
+**Render command** (already configured):
+```bash
+npx remotion render N8nExplainer out/video.mp4 --log=verbose
 ```
 
-Claude will:
-1. Update `theme.ts` with Acme Corp branding
-2. Generate composition with specified stages
-3. Calculate frame timings for 45-second video
-4. Request any missing assets (logo, screenshots)
-5. Commit, push, and guide through render process
+**DO NOT** include entry file in render command - Remotion auto-detects.
+
+**Render time**: ~5-10 minutes for 60-second video
+
+**Output**: Download from Actions → [workflow run] → Artifacts → `rendered-video`
+
+---
+
+## Troubleshooting Quick Reference
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Could not find composition` | Wrong composition ID | Use `N8nExplainer` (check src/index.ts) |
+| `404 Not Found` for asset | File not in public/ or not committed | Add file, `git add -A`, commit |
+| `libasound2 not found` | Ubuntu 24.04 | Use `libasound2t64` in workflow |
+| Choppy animation | Low damping | Use `{ damping: 20, stiffness: 100, mass: 0.8 }` |
+| Elements overlap | Wrong timing | Adjust `appearAt`/`disappearAt` frames |
+| TypeScript error | Bad code | Run `npx tsc --noEmit`, fix errors |
+
+---
+
+## Complete Example Flow
+
+**User says**: "Make a video for my email outreach automation"
+
+**Claude does**:
+
+1. **Ask for details** (if not provided):
+   - What triggers it?
+   - What are the steps?
+   - What's the output?
+   - Company name & brand color?
+
+2. **Generate JSON config** from their answers
+
+3. **Check assets**:
+   ```bash
+   ls n8n-video/public/
+   ```
+   → "I need you to upload your logo (webp/png) and any screenshots to GitHub at `n8n-video/public/`"
+
+4. **Wait for assets**, then verify they exist
+
+5. **Generate composition code** based on workflow steps
+
+6. **Validate**:
+   ```bash
+   npx tsc --noEmit
+   ```
+
+7. **Commit all**:
+   ```bash
+   git add -A && git commit -m "Add email outreach video"
+   ```
+
+8. **Push & instruct merge**:
+   ```bash
+   git push -u origin claude/add-remotion-skill-mW5Tk
+   ```
+   → "Merge to main to trigger render"
+
+9. **Guide to download**:
+   → "Go to Actions → Render Video → Artifacts → rendered-video"
+
+---
+
+## Files Reference
+
+```
+Remotion_playground/
+├── .claude/skills/remotion-video-creator.md  ← This file
+├── .github/workflows/render-video.yml        ← GitHub Actions
+├── CLAUDE.md                                  ← Project instructions
+└── n8n-video/
+    ├── public/                                ← ALL ASSETS GO HERE
+    │   ├── Large_Logo.webp
+    │   ├── slack_pic.png
+    │   └── music.mp3
+    ├── src/
+    │   ├── index.ts                          ← Registers compositions
+    │   ├── theme.ts                          ← Colors, fonts, settings
+    │   ├── compositions/
+    │   │   └── N8nExplainer.tsx              ← Main composition
+    │   └── components/                        ← Reusable components
+    ├── video-configs/                         ← JSON templates
+    │   ├── template.json
+    │   └── x-thread-automation.json
+    └── package.json
+```
+
+---
+
+## Remember
+
+1. **Assets first** - Check they exist before coding
+2. **Validate always** - Run tsc before committing
+3. **Commit binaries** - `git add -A` catches everything
+4. **Correct render command** - No entry file argument
+5. **Guide user** - They download from GitHub Actions artifacts

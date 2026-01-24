@@ -1,0 +1,63 @@
+{
+  "_instructions": "Fill this out and upload to Claude. Claude handles the rest.",
+
+  "workflow": {
+    "name": "Your Workflow Name",
+    "hook": "We automated [X]. Here's how.",
+    "problem": "Doing [X] manually takes hours.",
+    "trigger": {
+      "what": "Schedule / Webhook / Manual",
+      "when": "Every day at 9am / On form submit / etc."
+    },
+    "steps": [
+      {
+        "name": "Step Name",
+        "type": "trigger | integration | ai | human | output",
+        "description": "What this step does",
+        "tools": ["Tool 1", "Tool 2"]
+      },
+      {
+        "name": "AI Processing",
+        "type": "ai",
+        "description": "AI agent analyzes and decides",
+        "prompt_preview": "Optional: show a prompt snippet in video"
+      },
+      {
+        "name": "Human Review",
+        "type": "human",
+        "description": "Human approves before publishing",
+        "screenshot": "review-screen.png"
+      },
+      {
+        "name": "Output",
+        "type": "output",
+        "description": "Posts to Twitter / Sends email / etc.",
+        "screenshot": "final-result.png"
+      }
+    ],
+    "results": [
+      { "metric": "3x", "label": "per week" },
+      { "metric": "100%", "label": "automated" },
+      { "metric": "0", "label": "manual work" }
+    ],
+    "closing": "Your powerful closing line."
+  },
+
+  "branding": {
+    "company": "Your Company",
+    "color": "#00A0E4",
+    "logo_filename": "logo.webp"
+  },
+
+  "assets_to_upload": {
+    "_note": "Upload these files to GitHub: n8n-video/public/",
+    "required": [
+      "logo.webp - Your company logo",
+      "background-music.mp3 - Any royalty-free track"
+    ],
+    "optional": [
+      "screenshot1.png - Real UI screenshots add credibility",
+      "screenshot2.png - Show actual results"
+    ]
+  }
+}
