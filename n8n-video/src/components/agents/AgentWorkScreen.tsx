@@ -21,18 +21,19 @@ export const AgentWorkScreen: React.FC<AgentWorkScreenProps> = ({
 
   const localFrame = frame - appearAt;
 
+  // Smooth entrance - higher damping = less bounce, smoother animation
   const entranceProgress = spring({
     frame: localFrame,
     fps,
-    config: { damping: 12, stiffness: 80 },
+    config: { damping: 20, stiffness: 100, mass: 0.8 },
   });
 
-  const opacity = interpolate(entranceProgress, [0, 1], [0, 1]);
-  const scale = interpolate(entranceProgress, [0, 1], [0.9, 1]);
+  const opacity = interpolate(localFrame, [0, 12], [0, 1], { extrapolateRight: 'clamp' });
+  const scale = interpolate(entranceProgress, [0, 1], [0.95, 1]);
 
-  // Exit animation
+  // Exit animation - smooth fade out over 20 frames
   const exitOpacity = disappearAt
-    ? interpolate(frame, [disappearAt - 15, disappearAt], [1, 0], {
+    ? interpolate(frame, [disappearAt - 20, disappearAt], [1, 0], {
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
       })
