@@ -45,9 +45,10 @@ export const ConnectionLine: React.FC<ConnectionLineProps> = ({
   // Calculate total path length (approximation)
   const pathLength = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)) * 1.5;
 
-  // Data particle animation
-  const particleFrame = (frame - appearAt) % 60;
-  const particleProgress = interpolate(particleFrame, [0, 60], [0, 1]);
+  // Data particle animation - subtle flowing dot
+  const particleCycle = 45; // frames for one trip (1.5 seconds at 30fps)
+  const particleFrame = (frame - appearAt - drawDuration) % particleCycle;
+  const particleProgress = interpolate(particleFrame, [0, particleCycle], [0, 1]);
 
   // Calculate particle position along the bezier curve
   const t = particleProgress;
@@ -110,20 +111,31 @@ export const ConnectionLine: React.FC<ConnectionLineProps> = ({
         filter={isActive ? 'url(#glow)' : undefined}
       />
 
-      {/* Data particle */}
+      {/* Data particle - subtle flowing dot */}
       {isActive && drawProgress >= 1 && (
         <>
+          {/* Glow trail */}
           <circle
             cx={particleX}
             cy={particleY}
-            r="6"
+            r="8"
+            fill={color}
+            opacity={0.4}
+            filter="url(#glow)"
+          />
+          {/* Main particle */}
+          <circle
+            cx={particleX}
+            cy={particleY}
+            r="4"
             fill={color}
             filter="url(#glow)"
           />
+          {/* Bright center */}
           <circle
             cx={particleX}
             cy={particleY}
-            r="3"
+            r="2"
             fill="white"
           />
         </>
