@@ -265,6 +265,16 @@ export const N8nExplainer: React.FC = () => {
           isActive={frame - FRAMES.STAGE2_START > 210}
         />
 
+        {/* Flow line: articles to Topic Selector */}
+        <ConnectionLine
+          fromX={cx - 80}
+          fromY={cy - 20}
+          toX={cx + 90}
+          toY={cy}
+          appearAt={150}
+          isActive={frame - FRAMES.STAGE2_START > 160}
+        />
+
         <Caption
           text="One article selected."
           appearAt={220}
@@ -324,9 +334,9 @@ export const N8nExplainer: React.FC = () => {
               appearAt={45}
               isActive={false}
             />
-            <ConnectionLine fromX={cx - 240} fromY={cy - 60} toX={cx - 120} toY={cy - 60} appearAt={30} isActive={false} />
-            <ConnectionLine fromX={cx - 40} fromY={cy - 60} toX={cx + 80} toY={cy - 60} appearAt={35} isActive={false} />
-            <ConnectionLine fromX={cx + 160} fromY={cy - 60} toX={cx + 280} toY={cy - 60} appearAt={40} isActive={false} />
+            <ConnectionLine fromX={cx - 240} fromY={cy - 60} toX={cx - 120} toY={cy - 60} appearAt={30} isActive={frame - FRAMES.STAGE3_START > 40} />
+            <ConnectionLine fromX={cx - 40} fromY={cy - 60} toX={cx + 80} toY={cy - 60} appearAt={35} isActive={frame - FRAMES.STAGE3_START > 45} />
+            <ConnectionLine fromX={cx + 160} fromY={cy - 60} toX={cx + 280} toY={cy - 60} appearAt={40} isActive={frame - FRAMES.STAGE3_START > 50} />
           </>
         )}
 
@@ -419,6 +429,26 @@ export const N8nExplainer: React.FC = () => {
               y={cy - 50}
               appearAt={200}
               isActive
+            />
+
+            {/* Flow line into Quality Gate */}
+            <ConnectionLine
+              fromX={cx - 200}
+              fromY={cy - 150}
+              toX={cx - 40}
+              toY={cy - 50}
+              appearAt={200}
+              isActive={frame - FRAMES.STAGE4_START > 210}
+            />
+
+            {/* Flow line out of Quality Gate */}
+            <ConnectionLine
+              fromX={cx + 40}
+              fromY={cy - 50}
+              toX={cx + 200}
+              toY={cy + 50}
+              appearAt={220}
+              isActive={frame - FRAMES.STAGE4_START > 230}
             />
 
             {/* Score meter */}
