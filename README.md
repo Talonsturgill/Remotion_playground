@@ -16,6 +16,13 @@ Automated video creation system for n8n workflow explainer videos using Remotion
 ### With Claude
 Just say "make a video about [your workflow]" or upload a JSON config. Claude handles everything.
 
+### Fully Automated (n8n)
+Use the n8n workflow in `n8n-workflows/` to fully automate:
+```
+POST /webhook/generate-video + JSON → Wait 5-10 min → Get video.mp4
+```
+See `n8n-workflows/README.md` for setup instructions.
+
 ---
 
 ## Brand Guidelines
