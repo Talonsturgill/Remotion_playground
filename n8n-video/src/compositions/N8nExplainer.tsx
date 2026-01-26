@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, spring, Audio, staticFile } from 'remotion';
+import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, spring, Audio, staticFile, Img } from 'remotion';
 import { theme } from '../theme';
 import { WorkflowNode } from '../components/nodes/WorkflowNode';
 import { ConnectionLine } from '../components/canvas/ConnectionLine';
@@ -970,38 +970,85 @@ export const N8nExplainer: React.FC = () => {
 
       {/* ========== RESULTS + CTA ========== */}
       <Sequence from={FRAMES.RESULTS_START} durationInFrames={FRAMES.RESULTS_END - FRAMES.RESULTS_START}>
+        {/* Screenshot reveal with cinematic animation */}
+        {frame >= FRAMES.RESULTS_START && frame < FRAMES.RESULTS_START + 180 && (() => {
+          const localFrame = frame - FRAMES.RESULTS_START;
+          const scale = spring({
+            frame: localFrame,
+            fps,
+            config: { damping: 18, stiffness: 80, mass: 0.9 },
+          });
+          const opacity = interpolate(localFrame, [0, 30], [0, 1], { extrapolateRight: 'clamp' });
+          const glowPulse = 0.5 + Math.sin(localFrame * 0.08) * 0.3;
+
+          return (
+            <div
+              style={{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: `translate(-50%, -50%) scale(${scale * 0.85})`,
+                opacity,
+                borderRadius: 16,
+                overflow: 'hidden',
+                boxShadow: `0 0 ${60 * glowPulse}px ${theme.colors.primary}50, 0 20px 60px rgba(0,0,0,0.6)`,
+                border: `3px solid ${theme.colors.primary}60`,
+              }}
+            >
+              <Img
+                src={staticFile('blog_topics.png')}
+                style={{
+                  maxWidth: 900,
+                  maxHeight: 700,
+                  objectFit: 'contain',
+                }}
+              />
+            </div>
+          );
+        })()}
+
+        <Caption
+          text="The actual output. Every Monday."
+          appearAt={20}
+          disappearAt={120}
+          position="top"
+          size="large"
+          highlight
+        />
+
+        {/* Stats appear after screenshot fades */}
         <Stats
           stats={[
             { value: '5hrs', label: '→ 0hrs research' },
             { value: '12-15', label: 'topics weekly' },
             { value: '100%', label: 'automated' },
           ]}
-          appearAt={0}
+          appearAt={160}
         />
 
         <Caption
           text="From idea drought to content abundance."
-          appearAt={90}
-          disappearAt={160}
+          appearAt={220}
+          disappearAt={290}
           position="bottom"
           size="large"
         />
 
         <Caption
           text="Every Monday. Like clockwork."
-          appearAt={140}
-          disappearAt={220}
+          appearAt={270}
+          disappearAt={340}
           position="bottom"
           size="xlarge"
           highlight
         />
 
         {/* Final logo - centered at bottom */}
-        <Logo appearAt={180} position="bottom" size={55} />
+        <Logo appearAt={300} position="bottom" size={55} />
 
         <Caption
           text="Transform Labs — Automate Everything"
-          appearAt={220}
+          appearAt={340}
           position="bottom"
           size="medium"
         />
