@@ -8,13 +8,13 @@
     "build": "remotion render src/index.ts N8nExplainer out/video.mp4"
   },
   "dependencies": {
-    "@remotion/cli": "^4.0.409",
-    "@remotion/player": "^4.0.409",
+    "@remotion/cli": "^4.0.544",
+    "@remotion/player": "^4.0.544",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "remotion": "^4.0.409",
+    "remotion": "^4.0.544",
     "typescript": "^5.9.3"
   }
 }
